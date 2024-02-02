@@ -1,0 +1,29 @@
+<div class="header-div">
+    <ul>
+        <li class="li-float-left">
+            <a class="a-logo" routerLink="/home">Fuqua Acronyms</a>
+        </li>
+        @if (isAdmin()) {
+            <li class="li-item li-float-left">
+                <!-- <a class="a-menu-item" (click)="newAcronym()">New Acronym</a> -->
+                <a class="a-menu-item" routerLink="/new-acronym">New Acronym</a>
+            </li> 
+        }
+
+        <li class="li-item li-float-left">
+            <div style="display: inline-block">
+                <a class="a-menu-item">Filter</a>
+                <span style="padding-right: 0.25rem;"></span>
+                <input  
+                [(ngModel)]="filterTerm"
+                (keyup)="onKeyupFilter()"
+                type="text" 
+                size="20">
+            </div>
+        </li> 
+
+    </ul>
+</div>	
+
+<router-outlet></router-outlet> 
+

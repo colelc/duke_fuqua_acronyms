@@ -1,0 +1,28 @@
+
+.table-grid-acronyms {
+    display: grid;
+    /*grid-template-columns: 0.3fr 3fr 1fr 1fr 1fr;*/
+   /* grid-template-columns: 0.3fr 0.8fr 3fr 1fr 1fr 1fr;*/
+   grid-template-columns: 0.5fr 1fr 2fr 6fr 1fr 1.5fr 1fr;
+    row-gap: 0px;
+    column-gap: 0px;
+    margin: auto;
+    background-color: white;
+ }
+
+.acronym-image {
+     cursor: pointer;
+     width: 1.2rem;
+     height: 1.2rem;
+   }
+ 
+   .disabled-link {
+     pointer-events: none;
+     opacity: 0.3;
+   }
+ 
+   .enabled-link {
+     cursor: pointer;
+     opacity: 1.0;
+   }
+ 

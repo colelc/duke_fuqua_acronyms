@@ -1,0 +1,39 @@
+
+<div>
+    <form class="acronym-form">
+        <label for="acronyn-name">Acronym *</label>
+        <input type="text" name="acronym-name" size="10" class="input-box" required 
+            (keyup)="onKeyUp()"
+            [(ngModel)]="acronym.acronym" >
+
+        <label for="refers-to-name">Refers To *</label>
+        <input type="text" name="refers-to-name"  class="input-box" required 
+            (keyup)="onKeyUp()"
+            [(ngModel)]="acronym.refersTo">
+
+        <label for="definition-name">Definition *</label>
+        <textarea name="definition-name" rows="8" maxlength="4096"  class="input-box" 
+            (keyup)="onKeyUp()"
+            [(ngModel)]="acronym.definition"></textarea>
+        
+        <label for="area-key-name">Area Key *</label>
+        <input type="text" name="area-key-name"  class="input-box" required
+            (keyup)="onKeyUp()"
+            [(ngModel)]="acronym.areaKey">
+        
+        <label for="tag-name">Tags</label>
+        <input type="text" name="tag-name"  class="input-box" 
+            placeholder="(Use comma to delimit multiple tags)">
+
+        <button [class]="submitButtonClass" 
+            (click)="onClick()">Submit</button>
+
+        <span style="padding-top:1.5rem;"></span>
+        <label for="message-name">Status</label>
+        <input type="text" name="message-name" [class]="messageStatusClass" readonly [(ngModel)]="status">
+
+    </form>
+</div> 
+
+
+	

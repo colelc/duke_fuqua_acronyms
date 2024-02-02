@@ -1,0 +1,146 @@
+https://medium.com/@ibrahimhz/creating-your-first-backend-with-node-js-step-by-step-guide-892769af4cb0
+
+
+
+
+Create project directory.
+
+linda@Linda:~/vsc-workspace$ mkdir acronyms_backend
+linda@Linda:~/vsc-workspace$ cd acronyms_backend/
+linda@Linda:~/vsc-workspace/acronyms_backend$ 
+
+
+
+
+
+do npm init
+
+linda@Linda:~/vsc-workspace/acronyms_backend$ npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (@fuquaschoolofbusiness/acronyms_backend) acronyms_node_backend
+version: (1.0.0) 
+description: Backend for Fuqua Acronyms project
+entry point: (index.js) 
+test command: 
+git repository: 
+keywords: 
+author: Linda Cole
+license: (ISC) 
+About to write to /home/linda/vsc-workspace/acronyms_backend/package.json:
+
+{
+  "name": "acronyms_node_backend",
+  "version": "1.0.0",
+  "description": "Backend for Fuqua Acronyms project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Linda Cole",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes) 
+linda@Linda:~/vsc-workspace/acronyms_backend$ 
+
+
+
+
+install dependencies
+
+linda@Linda:~/vsc-workspace/acronyms_backend$ npm install express
+
+added 62 packages in 5s
+
+11 packages are looking for funding
+  run `npm fund` for details
+linda@Linda:~/vsc-workspace/acronyms_backend$ 
+
+
+
+
+
+
+project structure (create these file/folders inside vscode under project home directory)
+
+    server.js: This file serves as the entry point for your Node.js application.
+    
+    routes/: Store route files here.
+    
+    controllers/: Keep your route controllers in this folder.
+    
+    models/: If your project involves a database, store database models here.
+    
+    
+    
+    
+    
+    
+put the project in git   (git@github.com:colelc/acronyms_backend.git)
+
+
+
+
+
+Create config: 2 files.  .env and .env.sample
+
+
+
+
+server.js
+
+this file is the entry point for the app.
+here, you define the http object and start the server (Express, in this case).
+
+
+
+
+serve it up
+
+linda@Linda:~/vsc-workspace/acronyms_backend$ node server.js
+Node.js HTTP is running on port 3050
+
+
+
+
+
+Test browser: http://localhost:3050.  OK good.
+
+
+
+
+
+Install this for auto-refresh when in development mode.
+
+linda@Linda:~/vsc-workspace/acronyms_backend$ npm install nodemon --save-dev
+
+added 33 packages in 3s
+
+15 packages are looking for funding
+  run `npm fund` for details
+
+
+
+MORE NOTES ABOUT STARTING UP THE NODEJS SERVER:
+ I edited the package.json file.  Added these lines:
+
+   "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon ./server.js localhost 3050",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  I installed the nodemon package.  
+  This means that when I start up my nodejs server in this way: "npm run dev"
+  then
+  any code changes I make, I don't need to manually stop/start the server.

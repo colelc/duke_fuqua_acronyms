@@ -1,0 +1,13 @@
+
+.table-grid-acronyms {
+    display: grid;
+   grid-template-columns: 1fr 2fr 6fr 1fr 1.5fr 1fr;
+    row-gap: 0px;
+    column-gap: 0px;
+    margin: auto;
+    background-color: white;
+ }
+
+
+
+

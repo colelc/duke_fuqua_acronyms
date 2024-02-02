@@ -1,0 +1,35 @@
+https://node-postgres.com/
+
+https://javascript.plainenglish.io/how-to-write-postgresql-queries-for-node-js-714393c3fc04
+
+
+(imported a Javascript (ES6) extension in my VSC workspace.)
+
+
+
+Install the pg node package.
+
+linda@Linda:~/vsc-workspace/acronyms_backend$ npm install pg
+
+added 16 packages in 2s
+
+11 packages are looking for funding
+  run `npm fund` for details
+linda@Linda:~/vsc-workspace/acronyms_backend$ 
+
+
+
+
+
+Learning how to import stuff between files.
+https://www.stanleyulili.com/node/node-modules-import-and-use-functions-from-another-file
+
+
+
+
+Install dotenv in order to read the .env file.
+npm install dotenv
+
+nodejs provides module "process" for us.
+
+Refer to config.js to see implementation example.

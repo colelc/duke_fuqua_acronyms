@@ -1,0 +1,48 @@
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: "Open Sans", sans-serif;
+	/*color: #312797;*/
+	line-height: 1.5;
+}
+
+.acronym-header {
+	position: sticky;
+	background-color: mediumblue;
+	text-align: left;
+	font-weight: bold;
+	font-size: 0.7rem;
+	color: white;
+	overflow-wrap: break-word;
+	padding-top: 0.4rem;
+	padding-bottom: 0.4rem;
+	padding-left: 0.8rem;
+	padding-right: 0.8rem;
+	border-bottom: 1px solid white;
+	border-right: 1px solid white;
+  }
+
+.acronym-data-cell {
+	font-size: 0.8rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
+	color: #333;
+	overflow-wrap: break-word;
+	text-align: left;
+	border-bottom: 1px solid grey;
+	border-right: 1px solid grey;
+	background-color: white;
+  }
+
+  .acronym-data-cell-striping {
+	 background-color: #f2f2f2;
+  }
+
+

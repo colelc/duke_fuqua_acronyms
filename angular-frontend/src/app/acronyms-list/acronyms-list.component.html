@@ -1,0 +1,21 @@
+
+
+    <div class="table-grid-acronyms">
+        <div class="acronyms-header">Acronym</div>
+        <div class="acronyms-header">Refers To</div>
+        <div class="acronyms-header">Definition</div>
+        <div class="acronyms-header">Area Key</div>
+        <div class="acronyms-header">Tags</div>
+        <div class="acronyms-header">Last Updated</div>
+
+        @for (a of acronyms; track a.id) {
+		  <div class="acronyms-td">{{ a.acronym}}</div>
+          <div class="acronyms-td">{{ a.refersTo }}</div>
+          <div class="acronyms-td">{{a.definition}}</div>
+          <div class="acronyms-td">{{a.areaKey}}</div>
+          <div class="acronyms-td">tags</div>
+          <div class="acronyms-td">last updated</div>
+        }
+
+     </div>
+
