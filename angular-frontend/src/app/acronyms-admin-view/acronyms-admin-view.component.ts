@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { lastValueFrom } from 'rxjs';
 import { Acronym } from '../interface/acronym-if';
 import { Saved } from '../interface/saved-if';
 import { AcronymsService } from '../service/acronyms.service';
@@ -15,7 +14,7 @@ import { HttpService } from '../service/http.service';
   styleUrl: './acronyms-admin-view.component.css'
 })
 
-export class AcronymsAdminViewComponent {
+export class AcronymsAdminViewComponent implements OnInit {
 
   acronyms: Acronym[] = [];
   saved: Saved[] = [];
@@ -24,17 +23,14 @@ export class AcronymsAdminViewComponent {
   constructor(private acronymsService: AcronymsService, private httpService: HttpService) {
   }
 
-  async ngOnInit() {
-    console.log("AdminViewComponent ngOnInit - calling this.acronymsService.getAcronyms");
-    //this.acronyms = this.acronymsService.getAcronyms();
+  ngOnInit() {
     this.getAcronyms();
-   // return this.acronyms;
+   //this.acronyms = this.getAcronyms();
+    //console.log("acronyms", this.acronyms);
   }
 
-  public getAcronyms = async () => {
-    const acronyms$ = this.httpService.getAcronyms();
-    this.acronyms = await lastValueFrom(acronyms$);
-    //return this.acronyms;
+  getAcronyms = ():void => {
+    this.httpService.getAcronyms().subscribe(data => this.acronyms = data);
 }
 
   calculateStriping = (isEven: boolean) => {
@@ -81,8 +77,9 @@ export class AcronymsAdminViewComponent {
   }
 
   getHidden = (id: number) => {
-    const filtered = this.saved.filter((obj) => obj.id === id);
-    return !filtered[0].saved;
+    //const filtered = this.saved.filter((obj) => obj.id === id);
+    //return !filtered[0].saved;
+    return true;
   }
 
   showCheckmark = (id: number) => {

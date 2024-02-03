@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
+import { Observable, catchError, of, tap } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
 import { ConfigService } from "./config.service";
 
@@ -24,29 +24,52 @@ export class HttpService {
     }
 
     // GET
-    getAcronyms = ():Observable<Acronym[]> => {
-      console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
+    getAcronyms(): Observable<Acronym[]> {
       return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
-        .pipe(map(response => response));
+        .pipe(
+          tap(_ => console.log("fetched acronyms")),
+          catchError(this.handleError<Acronym[]>('getAcronyms', []))
+        );
     }
 
+    // GET
+    // getAcronyms = ():Observable<Acronym[]> => {
+    //   console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
+    //   return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
+    //     .pipe(catchError(this.handleError<Acronym[]>('getAcronyms', [])));
+    // }
 
-    // getAcronyms = ():Acronym[] => {
+    private handleError<T>(operation = 'operation', result?: T) {
+      return (error: any): Observable<T> => {
+    
+        // TODO: send the error to remote logging infrastructure
+        console.error(error); // log to console instead
+    
+        // TODO: better job of transforming error for user consumption
+        //this.log(`${operation} failed: ${error.message}`);
+    
+        // Let the app keep running by returning an empty result.
+        return of(result as T);
+      };
+    }
+
+    // GET
+    // getAcronyms = ():Observable<Acronym[]> => {
     //      console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
     //      let retValue:Acronym[] = [];
 
     //      //this.http.get<{message: string, acronyms:Acronym[]}>("http://localhost:3050/api/acronyms")
     //      //.subscribe();
 
-    //      this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
-    //       .subscribe((data) => {
-    //         console.log("data", data);
-    //         retValue = data;
-    //         console.log("retValue", retValue);
+    //      return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms");
+    //      // .subscribe((data) => {
+    //      //   console.log("data", data);
+    //      //   retValue = data;
+    //      //   console.log("retValue", retValue);
     //        // return data;
-    //       });
+    //      // });
 
-    //       return retValue;
+    //       //return retValue;
 
     //    //return this.getTestData();
     // }
