@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { lastValueFrom } from 'rxjs';
 import { Acronym } from '../interface/acronym-if';
 import { Saved } from '../interface/saved-if';
 import { AcronymsService } from '../service/acronyms.service';
+import { HttpService } from '../service/http.service';
 
 @Component({
   selector: 'app-acronyms-admin-view',
@@ -19,14 +21,21 @@ export class AcronymsAdminViewComponent {
   saved: Saved[] = [];
   enableSaveIcon : string = "disabled-link";
 
-  constructor(private acronymsService: AcronymsService) {
+  constructor(private acronymsService: AcronymsService, private httpService: HttpService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log("AdminViewComponent ngOnInit - calling this.acronymsService.getAcronyms");
-    this.acronyms = this.acronymsService.getAcronyms();
-    this.initCheckmarks();
+    //this.acronyms = this.acronymsService.getAcronyms();
+    this.getAcronyms();
+   // return this.acronyms;
   }
+
+  public getAcronyms = async () => {
+    const acronyms$ = this.httpService.getAcronyms();
+    this.acronyms = await lastValueFrom(acronyms$);
+    //return this.acronyms;
+}
 
   calculateStriping = (isEven: boolean) => {
     if (isEven) {

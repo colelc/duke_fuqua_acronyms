@@ -24,7 +24,7 @@ export class AcronymsUserViewComponent {
   }
 
   ngOnInit() {
-    this.acronyms = this.acronymsService.getAcronyms();
+    //this.acronyms = this.acronymsService.getAcronyms();
   }
 
 }

@@ -13,17 +13,31 @@ export class AcronymsService {
 
   }
 
-  getAcronyms = () => {
-      this.acronyms = this.httpService.getAcronyms();
-     // this.acronyms = this.httpService.getTestData();
-      console.log("this.acronyms", this.acronyms);
 
-      return this.acronyms;
-      // by slicing, this method returns a new array which will always have
-      //  the exact copy of the acronyms array within this class
-      //return this.acronyms.slice();
-      //return [...this.acronyms];
-  }
+  // public getAcronyms = async () => {
+  //     const acronyms$ = this.httpService.getAcronyms();
+  //     this.acronyms = await lastValueFrom(acronyms$);
+  //     return this.acronyms;
+  // }
+  
+  // getAcronyms = () => {
+  //   try {
+  //     this.httpService.getAcronyms()
+  //       .subscribe((data) => {
+  //         console.log("data", data);
+  //         this.acronyms = data;  
+  //         return this.acronyms;
+  //      });
+  //     } catch(err) {
+  //       console.log("uh oh, error, returning the test data", err);
+  //       this.acronyms = this.httpService.getTestData();
+  //       return this.acronyms;
+  //     }
+
+  //     console.log("uh oh, error, returning the test data");
+  //     this.acronyms = [];
+  //     return this.acronyms;
+  // }
 
   getAcronymById = (id: number) => {
       for (let a of this.acronyms) {

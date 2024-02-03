@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable, map } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
 import { ConfigService } from "./config.service";
 
@@ -23,31 +24,32 @@ export class HttpService {
     }
 
     // GET
-    getAcronyms = ():Acronym[] => {
-         console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
-         let retValue:Acronym[] = [];
-
-        //  const responseBodyFunction = (data: Acronym[]) => {
-        //   console.log(data);
-
-        //  };
-
-         //this.http.get<{message: string, acronyms:Acronym[]}>("http://localhost:3050/api/acronyms")
-         //.subscribe();
-
-         this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
-          .subscribe((data) => {
-            console.log("data", data);
-            retValue = data;
-            console.log("retValue", retValue);
-           // return data;
-          });
-
-          return retValue;
-
-       //return this.getTestData();
-
+    getAcronyms = ():Observable<Acronym[]> => {
+      console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
+      return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
+        .pipe(map(response => response));
     }
+
+
+    // getAcronyms = ():Acronym[] => {
+    //      console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
+    //      let retValue:Acronym[] = [];
+
+    //      //this.http.get<{message: string, acronyms:Acronym[]}>("http://localhost:3050/api/acronyms")
+    //      //.subscribe();
+
+    //      this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
+    //       .subscribe((data) => {
+    //         console.log("data", data);
+    //         retValue = data;
+    //         console.log("retValue", retValue);
+    //        // return data;
+    //       });
+
+    //       return retValue;
+
+    //    //return this.getTestData();
+    // }
 
     getTestData = ():Acronym[] => {
         console.log("HttpService.getTestData - HERE WE ARE LOADING IN THE TEST DATA");
