@@ -17,4 +17,11 @@ const pool = new pg.Pool({
     port: config.data.postgres.port
 });
 
+// the pool will emit an error on behalf of any idle clients
+pool.on('error', (err, client) => {
+    console.error('Unexpected error on idle client', err)
+    process.exit(-1)
+  })
+   
+
 module.exports = { client, pool };

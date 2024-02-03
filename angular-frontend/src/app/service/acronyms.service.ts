@@ -14,27 +14,16 @@ export class AcronymsService {
   }
 
   getAcronyms = () => {
-      console.log("AcronymsService.getAcronyms");
-      this.acronyms = this.httpService.getTestData();
+      console.log("AcronymsService.getAcronyms DO WE SEE THIS");
+      this.acronyms = this.httpService.getAcronyms();
+     // this.acronyms = this.httpService.getTestData();
       console.log(this.acronyms);
+      
+      return this.acronyms;
       // by slicing, this method returns a new array which will always have
       //  the exact copy of the acronyms array within this class
       //return this.acronyms.slice();
-      return [...this.acronyms];
-
-      // WE WILL WANT TO GO TO THE SERVER HERE, TO GET A NEW ACRONYMS LIST
-     // return this.httpService.getAcronyms();
-    //return this.backendService.getAcronyms();
-
-        // this.http.get<Acronym[]>("something.json")
-        // .pipe(map(data => _.values(data)))
-        // .subscribe(response => {
-        //     console.log("response", response);
-        // });
-        // return [];
-
-
-   // this.backendService.getAcronyms(),,
+      //return [...this.acronyms];
   }
 
   getAcronymById = (id: number) => {
