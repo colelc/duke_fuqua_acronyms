@@ -28,9 +28,18 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
   getAcronyms = ():void => {
-    this.httpService.getAcronyms().subscribe(data => {
-      this.acronyms = data;
-      console.log("this.acronyms", this.acronyms);
+    this.httpService.getAcronyms()
+      .subscribe(data => {
+        for (let d of data) {
+          console.log("d", d);
+          d.refersTo = d["refers_to"];
+          d.areaKey = d["area_key"];
+          d.lastUpdatedBy = d["last_updated_by"];
+          d.lastUpdated = d["last_updated"];
+        }
+
+        this.acronyms = data;
+        console.log("this.acronyms", this.acronyms);
     });
   }
   calculateStriping = (isEven: boolean) => {
