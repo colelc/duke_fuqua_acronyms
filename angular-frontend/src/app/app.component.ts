@@ -8,7 +8,6 @@ import { AcronymsEditComponent } from './acronyms-edit/acronyms-edit.component';
 import { AcronymsFooterComponent } from './acronyms-footer/acronyms-footer.component';
 import { AcronymsUserViewComponent } from './acronyms-user-view/acronyms-user-view.component';
 import { AcronymsService } from './service/acronyms.service';
-import { BackendService } from './service/backend.service';
 import { ConfigService } from './service/config.service';
 import { HttpService } from './service/http.service';
 import { UserService } from './service/user.service';
@@ -28,7 +27,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
     ,RouterOutlet
     , RouterLink
   ],
-  providers: [AcronymsService, UserService, HttpService, BackendService, ConfigService, Router],
+  providers: [AcronymsService, UserService, HttpService, ConfigService, Router],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   schemas: [/*CUSTOM_ELEMENTS_SCHEMA*/] // need this for PrimeNg to work

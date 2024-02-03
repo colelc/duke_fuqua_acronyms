@@ -25,14 +25,16 @@ export class AcronymsAdminViewComponent implements OnInit {
 
   ngOnInit() {
     this.getAcronyms();
-   //this.acronyms = this.getAcronyms();
-    //console.log("acronyms", this.acronyms);
   }
 
   getAcronyms = ():void => {
     this.httpService.getAcronyms().subscribe(data => this.acronyms = data);
-}
 
+    this.httpService.getAcronyms().subscribe(data => {
+      this.acronyms = data;
+      console.log("this.acronyms", this.acronyms);
+    });
+  }
   calculateStriping = (isEven: boolean) => {
     if (isEven) {
     return "acronym-data-cell";

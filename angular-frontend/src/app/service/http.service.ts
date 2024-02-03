@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, catchError, of, tap } from "rxjs";
+import { Observable, catchError, of } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
 import { ConfigService } from "./config.service";
 
@@ -9,6 +9,16 @@ export class HttpService {
 
   
     constructor(private configService: ConfigService, private http : HttpClient) {}
+
+
+    // GET
+    getAcronyms(): Observable<Acronym[]> {
+      return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
+        .pipe(
+          //tap(_ => console.log("fetched acronyms")),
+          catchError(this.handleError<Acronym[]>("getAcronyms", [])),
+        );
+    }
 
     // POST
     addAcronym = (acronym: Acronym) => {
@@ -23,22 +33,6 @@ export class HttpService {
         });
     }
 
-    // GET
-    getAcronyms(): Observable<Acronym[]> {
-      return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
-        .pipe(
-          tap(_ => console.log("fetched acronyms")),
-          catchError(this.handleError<Acronym[]>('getAcronyms', []))
-        );
-    }
-
-    // GET
-    // getAcronyms = ():Observable<Acronym[]> => {
-    //   console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
-    //   return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
-    //     .pipe(catchError(this.handleError<Acronym[]>('getAcronyms', [])));
-    // }
-
     private handleError<T>(operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
     
@@ -52,27 +46,6 @@ export class HttpService {
         return of(result as T);
       };
     }
-
-    // GET
-    // getAcronyms = ():Observable<Acronym[]> => {
-    //      console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
-    //      let retValue:Acronym[] = [];
-
-    //      //this.http.get<{message: string, acronyms:Acronym[]}>("http://localhost:3050/api/acronyms")
-    //      //.subscribe();
-
-    //      return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms");
-    //      // .subscribe((data) => {
-    //      //   console.log("data", data);
-    //      //   retValue = data;
-    //      //   console.log("retValue", retValue);
-    //        // return data;
-    //      // });
-
-    //       //return retValue;
-
-    //    //return this.getTestData();
-    // }
 
     getTestData = ():Acronym[] => {
         console.log("HttpService.getTestData - HERE WE ARE LOADING IN THE TEST DATA");
