@@ -25,6 +25,7 @@ export class HttpService {
     // GET
     getAcronyms = ():Acronym[] => {
          console.log("HttpService.getAcronyms - HERE IS WHERE WE ARE WORKING");
+         let retValue:Acronym[] = [];
 
         //  const responseBodyFunction = (data: Acronym[]) => {
         //   console.log(data);
@@ -37,18 +38,14 @@ export class HttpService {
          this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
           .subscribe((data) => {
             console.log("data", data);
+            retValue = data;
+            console.log("retValue", retValue);
+           // return data;
           });
 
+          return retValue;
 
-        // this.http.get<Acronym[]>("something.json")
-        // .pipe(map(data => _.values(data)))
-        // .subscribe(response => {
-        //     console.log("response", response);
-        // });
-        // return [];
-
-       //return this.http.get(ConfigService.URL_GET_ACRONYM);
-       return this.getTestData();
+       //return this.getTestData();
 
     }
 

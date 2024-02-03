@@ -3,6 +3,14 @@ const debug = require("debug")("node-angular");
 const express = require("express")
 const app = express();
 
+// handle CORS
+app.use((request, response, next) => {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Header", "Origin, X-Requested-With, Content-Type, Accept");
+    response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS, PATCH");
+    next();
+});
+
 // include route file(s)
 const acronymRoutes = require("./routes/acronyms");
 const apiRoutes = require("./routes/api");
@@ -29,7 +37,7 @@ app.on("listening", onListening);
 app.on("error", onError);
 
 // use the routes
-app.use("/acronyms", acronymRoutes);
+//app.use("/acronyms", acronymRoutes);
 app.use("/api", apiRoutes);
 
 app.listen(config.data.apiPort, () => {

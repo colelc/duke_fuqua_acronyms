@@ -13,25 +13,6 @@ const db = require("../db/postgres");
 
 // Define route for get a specific acronym by id
 // http://localhost:3050/acronyms/71
-// router.get("/acronyms/:id", (request, response) => {
-//     const id = request.params.id;
-//     console.log(id);
-
-//     db.pool.connect(async (err) => {
-//         if (err) {
-//             console.log("We have an error", err);
-//         } else {
-//             const queryConfig = {
-//                 text: "SELECT * FROM fuqua_acronyms WHERE id = $1",
-//                 values: [id]
-//             };
-//             const result = await db.client.query(queryConfig);
-//             console.log("result!", result.rows[0]);
-//             //response.send(result.rows);
-//             response.status(200).json(result.rows);
-//         }
-//     });
-// });
 try {
     router.get("/acronyms/:id", async (request, response) => {
         const id = request.params.id;

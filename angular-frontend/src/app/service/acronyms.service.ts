@@ -14,11 +14,10 @@ export class AcronymsService {
   }
 
   getAcronyms = () => {
-      console.log("AcronymsService.getAcronyms DO WE SEE THIS");
       this.acronyms = this.httpService.getAcronyms();
      // this.acronyms = this.httpService.getTestData();
-      console.log(this.acronyms);
-      
+      console.log("this.acronyms", this.acronyms);
+
       return this.acronyms;
       // by slicing, this method returns a new array which will always have
       //  the exact copy of the acronyms array within this class
