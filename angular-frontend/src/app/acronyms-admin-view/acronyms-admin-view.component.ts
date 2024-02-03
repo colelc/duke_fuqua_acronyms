@@ -28,8 +28,6 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
   getAcronyms = ():void => {
-    this.httpService.getAcronyms().subscribe(data => this.acronyms = data);
-
     this.httpService.getAcronyms().subscribe(data => {
       this.acronyms = data;
       console.log("this.acronyms", this.acronyms);
