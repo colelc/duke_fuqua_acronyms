@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Acronym } from '../interface/acronym-if';
 import { Saved } from '../interface/saved-if';
+import { Tag } from '../interface/tag-if';
+import { TagMap } from '../interface/tag-map-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -17,6 +19,8 @@ import { HttpService } from '../service/http.service';
 export class AcronymsAdminViewComponent implements OnInit {
 
   acronyms: Acronym[] = [];
+  tags: Tag[] = [];
+  tagMap: TagMap[] = [];
   saved: Saved[] = [];
   enableSaveIcon : string = "disabled-link";
 
@@ -28,20 +32,83 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
   getAcronyms = ():void => {
+    // ok, not the best way to do this, but going with it for now
     this.httpService.getAcronyms()
       .subscribe(data => {
         for (let d of data) {
-          console.log("d", d);
           d.refersTo = d["refers_to"];
           d.areaKey = d["area_key"];
           d.lastUpdatedBy = d["last_updated_by"];
           d.lastUpdated = d["last_updated"];
+          delete d["refers_to"];
+          delete d["area_key"];
+          delete d["created_by"];
+          delete d["last_updated"];
+          delete d["last_updated_by"];
         }
 
         this.acronyms = data;
-        console.log("this.acronyms", this.acronyms);
-    });
+
+        this.httpService.getAcronymTags()
+          .subscribe(tagData => {
+            //console.log("tagData", tagData);
+            for (let t of tagData) {
+              t.tag = t["name"];
+              t.createdBy = t["created_by"];
+              t.lastUpdated = t["last_updated"];
+              t.lastUpdatedBy = t["last_updated_by"];
+              delete t["name"];
+              delete t["created_by"];
+              delete t["last_updated"];
+              delete t["last_updated_by"];
+            }
+            this.tags = tagData;
+            // console.log("this.acronyms", this.acronyms);
+            // console.log("this.tags", this.tags);
+
+            // get the map
+            this.httpService.getAcronymTagMap()
+              .subscribe(mapData => {
+                for (let m of mapData) {
+                  m.acronymId = m["acronym_id"];
+                  m.tagId = m["tag_id"];
+                  m.createdBy = m["created_by"];
+                  m.lastUpdated = m["last_updated"];
+                  m.lastUpdatedBy = m["last_updated_by"];
+                  delete m["acronym_id"];
+                  delete m["tag_id"];
+                  delete m["created_by"];
+                  delete m["last_updated"];
+                  delete m["last_updated_by"];
+                }
+                this.tagMap = mapData;
+
+                for (let tm of this.tagMap) {
+                  // get the tag (will be an array)
+                  const tag = this.tags.filter(function(tag) {
+                    return tag.id === tm.tagId;
+                  });
+
+                  // get the acronym (will be an array)
+                  let acronym = this.acronyms.filter(function(a){
+                    return a.id = tm.acronymId;
+                  });
+
+                  // fill out the tag fields in the acronym data
+
+                  // get the acronym_id
+                  
+
+                }
+                console.log("this.acronyms", this.acronyms);
+                console.log("this.tags", this.tags);
+                console.log("this.tagMap", this.tagMap);
+              })
+          }); // acronym_tags
+  
+    }); // acronyms
   }
+
   calculateStriping = (isEven: boolean) => {
     if (isEven) {
     return "acronym-data-cell";

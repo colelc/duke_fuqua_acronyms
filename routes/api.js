@@ -34,16 +34,45 @@ try {
     return result.send("There was an error");
 }
 
-
-// Define route to test postgres connectivity
 // http://localhost:3050/api/acronyms
 try {
     router.get("/acronyms", async (request, response, next) => {
         const pgClient = await db.pool.connect();
+
+        // let sql = "SELECT t.name, a.* FROM fuqua_acronyms a, fuqua_acronym_tags t ";
+        // sql += " LEFT JOIN fuqua_acronym_tag_map m on m.tag_id = t.id ";
+        // sql += " WHERE m.acronym_id = a.id ";
+        // sql += " ORDER BY a.id, t.name";
+        // const result = await pgClient.query(sql);
+
         const result = await pgClient.query("SELECT * FROM fuqua_acronyms");
         pgClient.release();
-        console.log("result!", result.rows[0]);
-        //response.send(result.rows);
+        response.json(result.rows);
+    });
+} catch(err) {
+    return result.send("There was an error", err);
+}
+
+// http://localhost:3050/api/acronym_tags
+try {
+    router.get("/acronym_tags", async (request, response, next) => {
+        const pgClient = await db.pool.connect();
+
+        const result = await pgClient.query("SELECT * FROM fuqua_acronym_tags");
+        pgClient.release();
+        response.json(result.rows);
+    });
+} catch(err) {
+    return result.send("There was an error", err);
+}
+
+// http://localhost:3050/api/acronym_tag_map
+try {
+    router.get("/acronym_tag_map", async (request, response, next) => {
+        const pgClient = await db.pool.connect();
+
+        const result = await pgClient.query("SELECT * FROM fuqua_acronym_tag_map");
+        pgClient.release();
         response.json(result.rows);
     });
 } catch(err) {
