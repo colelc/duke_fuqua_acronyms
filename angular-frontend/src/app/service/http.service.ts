@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, catchError, of } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
@@ -44,9 +44,9 @@ export class HttpService {
     addAcronym = (acronym: Acronym):Observable<Acronym> => {
         console.log("HttpService.addAcronym", acronym);
 
-        const headerData = new HttpHeaders();
-        headerData.append("Content-Type", "application/json");
-        const httpOptions = {headers: headerData};
+        //const headerData = new HttpHeaders();
+        //headerData.append("Content-Type", "application/json");
+        //const httpOptions = {headers: headerData};
 
         return this.http.post<Acronym>("http://localhost:3050/api/new_acronym", acronym/*, httpOptions*/)
           .pipe(
@@ -65,14 +65,6 @@ export class HttpService {
               lastUpdated: ""
             }))
           );
-
-        // here we will add the new acronym
-        // this.http.post(
-        //     ConfigService.URL_POST_ACRONYM, 
-        //     acronym
-        // ).subscribe(response => {
-        //     console.log("response", response);
-        // });
     }
 
     private handleError<T>(operation = 'operation', result?: T) {

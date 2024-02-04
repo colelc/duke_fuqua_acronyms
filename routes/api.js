@@ -45,7 +45,7 @@ try {
         // sql += " ORDER BY a.id, t.name";
         // const result = await pgClient.query(sql);
 
-        const result = await pgClient.query("SELECT * FROM fuqua_acronyms");
+        const result = await pgClient.query("SELECT * FROM fuqua_acronyms ORDER BY 1");
         pgClient.release();
         response.json(result.rows);
     });
@@ -81,20 +81,42 @@ try {
 
 // POST NEW ACRONYM
 try {
-    router.post("/new_acronym", (request, response) => {
-        console.log("router.post");
-       // console.log("request", request);
-       console.log("request.body", request.body);
-    });
-    // router.get("/acronym_tag_map", async (request, response, next) => {
-    //     const pgClient = await db.pool.connect();
+    router.post("/new_acronym", async (request, response) => {
+        //console.log("request.body", request.body);
 
-    //     const result = await pgClient.query("SELECT * FROM fuqua_acronym_tag_map");
-    //     pgClient.release();
-    //     response.json(result.rows);
-    // });
+        const data = request.body;
+        const values = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], data["tagString"], "postgres", "postgres" ];
+        console.log("data", data);
+        //console.log("values", values);
+
+
+        const pgClient = await db.pool.connect();
+
+        const sql1 = `INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, created_by, last_updated_by) 
+                    VALUES($1,$2,$3,$4,$5,$6,$7)
+                    RETURNING id
+        `;
+
+        try {
+            const result = await pgClient.query(sql1, values);
+
+            // const sql2 = `INSERT INTO fuqua_acronym_tags....`;
+            // await pgClient.query(sql2);
+
+            await pgClient.query("COMMIT");
+
+            response.json(result);
+        } catch(err) {
+            await pgClient.query("ROLLBACK");
+        } finally {
+            pgClient.release();
+        }
+
+    });
 } catch(err) {
     return result.send("There was an error", err);
-}
+} 
+
+
 
 module.exports = router;

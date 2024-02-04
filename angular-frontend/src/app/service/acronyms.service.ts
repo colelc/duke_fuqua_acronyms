@@ -11,18 +11,26 @@ export class AcronymsService {
 
   }
 
-  getAcronymById = (id: number) => {
-      for (let a of this.acronyms) {
-          if (a.id === id) {
-            return a;
-          }
-      }
-      return null;
+  getAcronyms = ():Acronym[] => {
+    return this.acronyms;
   }
 
-  setAcronym = (id: number, acronym: string) => {
-      console.log("setAcronym: id = " + id + " acronym = " + acronym);
+  setAcronyms = (acronyms:Acronym[]):void => {
+    this.acronyms = [...acronyms];
   }
+  
+  // getAcronymById = (id: number) => {
+  //     for (let a of this.acronyms) {
+  //         if (a.id === id) {
+  //           return a;
+  //         }
+  //     }
+  //     return null;
+  // }
+
+  // setAcronym = (id: number, acronym: string) => {
+  //     console.log("setAcronym: id = " + id + " acronym = " + acronym);
+  // }
 
   initAcronym = () => {
     return {
@@ -41,10 +49,10 @@ export class AcronymsService {
     }
   }
 
-  addAcronym = (newAcronym:Acronym) => {
-    console.log("addAcronym: ", newAcronym);
-    this.httpService.addAcronym(newAcronym);
-  }
+  // addAcronym = (newAcronym:Acronym) => {
+  //   console.log("addAcronym: ", newAcronym);
+  //   this.httpService.addAcronym(newAcronym);
+  // }
 
 
 }

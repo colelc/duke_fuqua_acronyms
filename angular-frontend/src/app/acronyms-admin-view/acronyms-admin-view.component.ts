@@ -28,7 +28,7 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAcronyms();
+   this.getAcronyms();
   }
 
   getAcronyms = ():void => {
@@ -50,7 +50,9 @@ export class AcronymsAdminViewComponent implements OnInit {
           delete d["last_updated_by"];
         }
 
-        this.acronyms = data;
+        this.acronymsService.setAcronyms(data);
+        // this.acronyms = data;
+        this.acronyms = this.acronymsService.getAcronyms();
         console.log("this.acronyms", this.acronyms);
     }); // acronyms
   }

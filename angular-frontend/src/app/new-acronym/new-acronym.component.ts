@@ -56,9 +56,11 @@ export class NewAcronymComponent implements OnInit {
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
         console.log("data", data);
+
       });
 
     // clear out fields
+    console.log("CLEARING OUT THE FORM");
     this.acronym = this.initAcronym();
 
     // re-disable the submit button

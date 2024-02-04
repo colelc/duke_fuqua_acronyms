@@ -23,6 +23,8 @@
         
         <label for="tag-name">Tags</label>
         <input type="text" name="tag-name"  class="input-box" 
+            (keyup)="onKeyUp()"
+            [(ngModel)]="acronym.tagString"
             placeholder="(Use comma to delimit multiple tags)">
 
         <button [class]="submitButtonClass" 
