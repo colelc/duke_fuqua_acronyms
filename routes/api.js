@@ -45,7 +45,7 @@ try {
         // sql += " ORDER BY a.id, t.name";
         // const result = await pgClient.query(sql);
 
-        const result = await pgClient.query("SELECT * FROM fuqua_acronyms ORDER BY 1");
+        const result = await pgClient.query("SELECT * FROM fuqua_acronyms ORDER BY acronym");
         pgClient.release();
         response.json(result.rows);
     });
