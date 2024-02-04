@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // include route file(s)
-const acronymRoutes = require("./routes/acronyms");
+//const acronymRoutes = require("./routes/acronyms");
 const apiRoutes = require("./routes/api");
 
 // inline route for basic hello world test
