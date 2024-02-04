@@ -85,7 +85,10 @@ try {
         //console.log("request.body", request.body);
 
         const data = request.body;
-        const values = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], data["tagString"], "postgres", "postgres" ];
+
+        // remove any trailing commas from the tag string
+        const noCommaAtEnd = data["tagString"].replace(/,*$/, "");
+        const values = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], noCommaAtEnd, "postgres", "postgres" ];
         console.log("data", data);
         //console.log("values", values);
 

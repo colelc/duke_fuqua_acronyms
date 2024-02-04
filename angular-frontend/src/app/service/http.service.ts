@@ -44,10 +44,6 @@ export class HttpService {
     addAcronym = (acronym: Acronym):Observable<Acronym> => {
         console.log("HttpService.addAcronym", acronym);
 
-        //const headerData = new HttpHeaders();
-        //headerData.append("Content-Type", "application/json");
-        //const httpOptions = {headers: headerData};
-
         return this.http.post<Acronym>("http://localhost:3050/api/new_acronym", acronym/*, httpOptions*/)
           .pipe(
             catchError(this.handleError<Acronym>("new Acronym", {
