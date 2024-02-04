@@ -79,4 +79,22 @@ try {
     return result.send("There was an error", err);
 }
 
+// POST NEW ACRONYM
+try {
+    router.post("/new_acronym", (request, response) => {
+        console.log("router.post");
+       // console.log("request", request);
+       console.log("request.body", request.body);
+    });
+    // router.get("/acronym_tag_map", async (request, response, next) => {
+    //     const pgClient = await db.pool.connect();
+
+    //     const result = await pgClient.query("SELECT * FROM fuqua_acronym_tag_map");
+    //     pgClient.release();
+    //     response.json(result.rows);
+    // });
+} catch(err) {
+    return result.send("There was an error", err);
+}
+
 module.exports = router;

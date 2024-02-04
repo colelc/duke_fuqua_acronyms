@@ -3,9 +3,9 @@
       <li class="li-float-left">
           <a class="a-logo" (click)="home()">Fuqua Acronyms</a>
       </li>
+
       @if (administrator) {
           <li class="li-item li-float-left">
-              <!-- <a class="a-menu-item" (click)="newAcronym()">New Acronym</a> -->
               <a class="a-menu-item" routerLink="/new-acronym">New Acronym</a>
           </li> 
       }
@@ -24,32 +24,9 @@
 
   </ul>
 </div>	
-<!-- <app-acronyms-header></app-acronyms-header>  -->
+
 <hr style="color: white;">
 
-<!-- @if (administrator) {
-  <app-acronyms-admin-view></app-acronyms-admin-view>
-} @else {
-  <app-acronyms-user-view></app-acronyms-user-view>
-} -->
-
-<!-- @if (administrator) {
-  <app-acronyms-admin-view></app-acronyms-admin-view>
-} @else {
-  <app-acronyms-user-view></app-acronyms-user-view>
-} -->
 <router-outlet></router-outlet>
 <app-acronyms-footer></app-acronyms-footer>
-
-
-
-<!-- <hr>
-
-<h1>Angular Router Sample</h1>-->
-<!-- <app-crisis-list></app-crisis-list>
-<app-heroes-list></app-heroes-list> -->
-<!--<nav>
-  <a class="button" routerLink="/crisis-list">Crisis Center</a> |
-  <a class="button" routerLink="/heroes-list">Heroes</a>
-</nav> -->
 

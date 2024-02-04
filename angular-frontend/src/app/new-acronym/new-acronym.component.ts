@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 
 import { Acronym } from '../interface/acronym-if';
 import { AcronymsService } from '../service/acronyms.service';
+import { HttpService } from '../service/http.service';
 
 @Component({
   selector: 'app-new-acronym',
@@ -18,7 +19,7 @@ export class NewAcronymComponent implements OnInit {
   messageStatusClass : string = "";
   submitButtonClass: string = "";
 
-  constructor(private acronymsService: AcronymsService) {
+  constructor(private acronymsService: AcronymsService, private httpService: HttpService) {
     this.acronym = this.initAcronym();
     this.disableElements();
   }
@@ -51,7 +52,11 @@ export class NewAcronymComponent implements OnInit {
   }
 
   onClick = () => {
-    this.acronymsService.addAcronym(this.acronym);
+    //this.acronymsService.addAcronym(this.acronym);
+    this.httpService.addAcronym(this.acronym)
+      .subscribe(data => {
+        console.log("data", data);
+      });
 
     // clear out fields
     this.acronym = this.initAcronym();
