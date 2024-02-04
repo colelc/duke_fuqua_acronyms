@@ -1,4 +1,3 @@
-import { Tag } from "./tag-if";
 
 export interface Acronym {
     id: number;
@@ -7,7 +6,7 @@ export interface Acronym {
     definition: string;
     areaKey: string;
     active: boolean;
-    tags:  Tag[];
+    tags:  string[];
     tagString: string;
     createdBy: string;
     created: string;

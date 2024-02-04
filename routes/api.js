@@ -94,7 +94,7 @@ try {
 
         const sql1 = `INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, created_by, last_updated_by) 
                     VALUES($1,$2,$3,$4,$5,$6,$7)
-                    RETURNING id
+                    RETURNING *
         `;
 
         try {

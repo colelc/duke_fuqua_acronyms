@@ -91,12 +91,7 @@ export class HttpService {
                 definition: "Weekend-long event for admitted students, organized by the Office of Admissions and student volunteers. There is a BDW in February and again in April to accommodate all admitted studentsâ€™ timelines. Admissions also hosts several other weekend events for prospective Daytime students in Fall. Also, the admitted studentsâ€™ weekend for the MMS and MQM programs is called Blue Devil Experience and for the EMBA programs is called Blue Devil Celebration.", 
                 areaKey: "Admissions",
                 active: true,
-                tags: [
-                      {id: 1, tag: "Admissions", active: true, 
-                      createdBy: "tagCBy", created: "tagC", lastUpdatedBy: "tagLuBy", lastUpdated: "tagLu"},
-                      {id: 2, tag: "Tag 2", active: true, 
-                      createdBy: "tagCBy", created: "tagC", lastUpdatedBy: "tagLuBy", lastUpdated: "tagLu"}
-                  ],
+                tags: ["Admissions"],
                 tagString: "Tag 1, Tag 2",
                 createdBy: "createdBy",
                 created: "created",
@@ -110,12 +105,7 @@ export class HttpService {
                 definition: "definition", 
                 areaKey: "areaKey",
                 active: true,
-                tags: [
-                      {id: 1, tag: "Tag 1", active: true, 
-                      createdBy: "tagCBy", created: "tagC", lastUpdatedBy: "tagLuBy", lastUpdated: "tagLu"},
-                      {id: 2, tag: "Tag 2", active: true, 
-                      createdBy: "tagCBy", created: "tagC", lastUpdatedBy: "tagLuBy", lastUpdated: "tagLu"}
-                  ],
+                tags: ["Tag 1", "Tag 2"],
                 tagString: "Tag 1, Tag 2",
                 createdBy: "createdBy",
                 created: "created",
@@ -129,13 +119,8 @@ export class HttpService {
                 definition: "This class introduces students to the essential elements of financial reporting, including managerial and financial accounting, and helps them develop a greater understanding of how financial information is used as a strategic tool for decision making.", 
                 areaKey: "Exec Ed",
                 active: true,
-                tags: [
-                      {id: 1, tag: "Exec Ed", active: true, 
-                      createdBy: "tagCBy", created: "tagC", lastUpdatedBy: "tagLuBy", lastUpdated: "tagLu"},
-                      {id: 2, tag: "Tag 2", active: true, 
-                      createdBy: "tagCBy", created: "tagC", lastUpdatedBy: "tagLuBy", lastUpdated: "tagLu"}
-                  ],
-                tagString: "Tag 1, Tag 2",
+                tags: ["Exec Ed"],
+                tagString: "Exec Ed",
                 createdBy: "createdBy",
                 created: "created",
                 lastUpdatedBy: "lastUpdatedBy",
