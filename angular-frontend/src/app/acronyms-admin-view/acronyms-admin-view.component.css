@@ -3,7 +3,7 @@
     display: grid;
     /*grid-template-columns: 0.3fr 3fr 1fr 1fr 1fr;*/
    /* grid-template-columns: 0.3fr 0.8fr 3fr 1fr 1fr 1fr;*/
-   grid-template-columns: 0.5fr 1fr 2fr 6fr 1fr 1.5fr 1fr;
+   grid-template-columns: 0.3fr 1fr 2fr 6fr 1fr 1.5fr 1fr;
     row-gap: 0px;
     column-gap: 0px;
     margin: auto;
@@ -12,8 +12,8 @@
 
 .acronym-image {
      cursor: pointer;
-     width: 1.2rem;
-     height: 1.2rem;
+     /* width: 1.2rem; */
+     height: 1.5rem;
    }
  
    .disabled-link {

@@ -52,46 +52,6 @@ export class AcronymsAdminViewComponent implements OnInit {
 
         this.acronyms = data;
         console.log("this.acronyms", this.acronyms);
-        // this.httpService.getAcronymTags()
-        //   .subscribe(tagData => {
-        //     //console.log("tagData", tagData);
-        //     for (let t of tagData) {
-        //       t.tag = t["name"];
-        //       t.createdBy = t["created_by"];
-        //       t.lastUpdated = t["last_updated"];
-        //       t.lastUpdatedBy = t["last_updated_by"];
-        //       delete t["name"];
-        //       delete t["created_by"];
-        //       delete t["last_updated"];
-        //       delete t["last_updated_by"];
-        //     }
-        //     this.tags = tagData;
-            // console.log("this.acronyms", this.acronyms);
-            // console.log("this.tags", this.tags);
-
-            // get the map
-            // this.httpService.getAcronymTagMap()
-            //   .subscribe(mapData => {
-            //     for (let m of mapData) {
-            //       m.acronymId = m["acronym_id"];
-            //       m.tagId = m["tag_id"];
-            //       m.createdBy = m["created_by"];
-            //       m.lastUpdated = m["last_updated"];
-            //       m.lastUpdatedBy = m["last_updated_by"];
-            //       delete m["acronym_id"];
-            //       delete m["tag_id"];
-            //       delete m["created_by"];
-            //       delete m["last_updated"];
-            //       delete m["last_updated_by"];
-            //     }
-            //     this.tagMap = mapData;
-
-            //     console.log("this.acronyms", this.acronyms);
-            //     console.log("this.tags", this.tags);
-            //     console.log("this.tagMap", this.tagMap);
-            //   })
-         // }); // acronym_tags
-  
     }); // acronyms
   }
 
@@ -105,15 +65,16 @@ export class AcronymsAdminViewComponent implements OnInit {
 
   calculateEditClass = (id: number) => {
     //console.log("calculateEditClass for id = " + id);
-    const a = this.acronymsService.getAcronymById(id);
-    if (a !== null) {
-      if (a.acronym.length < 2  ||  a.refersTo.length === 0  ||  a.definition.length === 0  ||  a.areaKey.length === 0) {
-        return "disabled-link";
-      } else {
-        return "enabled-link";
-      }
-    }
-    return "disabled-link";
+    // const a = this.acronymsService.getAcronymById(id);
+    // if (a !== null) {
+    //   if (a.acronym.length < 2  ||  a.refersTo.length === 0  ||  a.definition.length === 0  ||  a.areaKey.length === 0) {
+    //     return "disabled-link";
+    //   } else {
+    //     return "enabled-link";
+    //   }
+    // }
+    // return "disabled-link";
+    return "enabled-link";
   }
 
   onEditAcronym = ( id: number) => {
@@ -138,11 +99,10 @@ export class AcronymsAdminViewComponent implements OnInit {
     }
   }
 
-  getHidden = (id: number) => {
-    //const filtered = this.saved.filter((obj) => obj.id === id);
-    //return !filtered[0].saved;
-    return true;
-  }
+  // getHidden = (id: number) => {
+  //   const filtered = this.saved.filter((obj) => obj.id === id);
+  //   return !filtered[0].saved;
+  // }
 
   showCheckmark = (id: number) => {
     const filtered = this.saved.filter((obj) => obj.id === id);

@@ -9,18 +9,20 @@
     <div class="acronym-header">Last Updated</div>
 
     @for (a of acronyms; track a.id) {
-        <div [class]="calculateStriping($even)" >
-        <img src="assets/images/checkmark-16.png" class="acronym-image" [hidden]="getHidden(a.id)">
+        <div [class]="calculateStriping($even)">
+            <!-- <img src="assets/images/checkmark-16.png" class="acronym-image" [hidden]="getHidden(a.id)"> -->
 
-        <a [class]="calculateEditClass(a.id)" (click)="onEditAcronym(a.id)" >
-            <img src="assets/images/save-outline-icon.png" class="acronym-image">
-        </a>
+            <div>
+                <a [class]="calculateEditClass(a.id)" (click)="onEditAcronym(a.id)" >
+                    <img src="assets/images/pencil2.png" class="acronym-image">
+                </a>
+            </div>
 
-        <span style="padding-left: 0.5rem;"></span>
-
-        <a class="enabled-link" (click)="onDeleteAcronym(a.id)" >
-            <img src="assets/images/deleteCase.jpg" class="acronym-image">
-        </a>
+            <div>
+                <a class="enabled-link" (click)="onDeleteAcronym(a.id)" >
+                    <img src="assets/images/deleteCase.jpg" class="acronym-image">
+                </a>
+            </div>
         </div>
 
         <div [class]="calculateStriping($even)" type="text">{{ a.acronym }}</div>
