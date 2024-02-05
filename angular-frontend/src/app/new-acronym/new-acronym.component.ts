@@ -99,11 +99,11 @@ export class NewAcronymComponent implements OnInit {
       // make sure it is comma delimited
       if (!this.acronym.tagString.includes(",")) {
         this.acronym.tags.push(this.acronym.tagString);
-        //console.log("this.acronym.tags", this.acronym.tags);
+        console.log("keyup this.acronym.tags", this.acronym.tags);
       } else {
         const allTags = this.acronym.tagString.split(",");
         this.acronym.tags = allTags.map((tag) => tag.toUpperCase().trim()).filter((t) => t.length > 0);
-       // console.log("this.acronym.tags", this.acronym.tags);
+        console.log("keyup this.acronym.tags", this.acronym.tags);
       }
     }
     return "";
@@ -111,8 +111,11 @@ export class NewAcronymComponent implements OnInit {
 
   onClick = () => {
     const existingTags = this.tags.map(tag => tag.tag);
-    this.acronym.tags= this.acronym.tags.filter(tag => !existingTags.includes(tag));
-    console.log("new tag(s)", this.acronym.tags);
+    console.log("click existingTags", existingTags);
+    console.log("click proposed tags", this.acronym.tags);
+    //this.acronym.tags= this.acronym.tags.filter(tag => !existingTags.includes(tag));
+   // console.log("new tag(s)", this.acronym.tags);
+    let existing = new Set<string>();
 
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
@@ -124,12 +127,13 @@ export class NewAcronymComponent implements OnInit {
           this.status = "Uh oh, something is not right.  Contact your friendly SDS support person";
         }
       });
+      console.log("SUCCESS");
 
     // clear out fields
     this.acronym = this.initAcronym();
 
     // re-disable the submit button
-    this.disableElements("");
+    this.disableElements(this.acronym.acronym + " has been added as a new acronym");
   }
 
   doTheAdd = () => {
