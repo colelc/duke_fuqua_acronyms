@@ -58,7 +58,7 @@ try {
     router.get("/acronym_tags", async (request, response, next) => {
         const pgClient = await db.pool.connect();
 
-        const result = await pgClient.query("SELECT * FROM fuqua_acronym_tags");
+        const result = await pgClient.query("SELECT * FROM fuqua_acronym_tags WHERE active IS TRUE");
         pgClient.release();
         response.json(result.rows);
     });
@@ -89,7 +89,7 @@ try {
         // remove any trailing commas from the tag string
         const noCommaAtEnd = data["tagString"].replace(/,*$/, "");
         const values = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], noCommaAtEnd, "postgres", "postgres" ];
-        console.log("data", data);
+        //console.log("data", data);
         //console.log("values", values);
 
 
@@ -100,12 +100,33 @@ try {
                     RETURNING *
         `;
 
-       
-        try {
-            const result = await pgClient.query(sql1, values);
+        console.log(sql1);
+        console.log(values.join(", "));
 
-            // const sql2 = `INSERT INTO fuqua_acronym_tags....`;
-            // await pgClient.query(sql2);
+        try {
+            // insert to fuqua_acronyms
+            const result = await pgClient.query(sql1, values);
+            //console.log("result", result);
+
+            // if we have new tags, need to insert them into fuqua_acronym_tags
+            if (data["tags"].length > 0) {
+                console.log("tags to insert", data["tags"]);
+                for (let newTag of data["tags"]) {
+                    console.log("inserting new tag", newTag);
+                    const sql2 = `INSERT INTO fuqua_acronym_tags (name, created_by, last_updated_by)
+                                    VALUES($1)
+                                    RETURNING *
+                    `;
+
+                    console.log(sql2);
+                    console.log(newTag);
+                    const result = await pgClient.query(sql2, newTag);
+
+                    // here we add the map row?
+                    console.log("tag inserted");
+                }
+            }
+
 
             await pgClient.query("COMMIT");
 

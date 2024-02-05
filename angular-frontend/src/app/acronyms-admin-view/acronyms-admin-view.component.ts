@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Acronym } from '../interface/acronym-if';
 import { Saved } from '../interface/saved-if';
-import { Tag } from '../interface/tag-if';
-import { TagMap } from '../interface/tag-map-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -19,8 +17,6 @@ import { HttpService } from '../service/http.service';
 export class AcronymsAdminViewComponent implements OnInit {
 
   acronyms: Acronym[] = [];
-  tags: Tag[] = [];
-  tagMap: TagMap[] = [];
   saved: Saved[] = [];
   enableSaveIcon : string = "disabled-link";
 
