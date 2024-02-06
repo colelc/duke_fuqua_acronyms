@@ -88,34 +88,28 @@ export class NewAcronymComponent implements OnInit {
   tagSupport = ():string => {
     this.status = "";
     this.acronym.tagString = this.acronym.tagString.toUpperCase();
-    this.acronym.tags = [];
 
     if (this.acronym.tagString.length > 0) {
       // make sure we have alphanumeric characters
         if (!(/^[a-zA-Z0-9, ]+$/.test(this.acronym.tagString))) {
           return "Tag characters must be alphanumeric";
         }
-
-      // make sure it is comma delimited
-      if (!this.acronym.tagString.includes(",")) {
-        this.acronym.tags.push(this.acronym.tagString);
-        console.log("keyup this.acronym.tags", this.acronym.tags);
-      } else {
-        const allTags = this.acronym.tagString.split(",");
-        this.acronym.tags = allTags.map((tag) => tag.toUpperCase().trim()).filter((t) => t.length > 0);
-        console.log("keyup this.acronym.tags", this.acronym.tags);
-      }
     }
     return "";
   }
 
   onClick = () => {
     const existingTags = this.tags.map(tag => tag.tag);
-    console.log("click existingTags", existingTags);
-    console.log("click proposed tags", this.acronym.tags);
-    //this.acronym.tags= this.acronym.tags.filter(tag => !existingTags.includes(tag));
-   // console.log("new tag(s)", this.acronym.tags);
-    let existing = new Set<string>();
+
+    this.acronym.tags = [];
+
+    // trim and dedupe candidate tags
+    let candidateTags = this.acronym.tagString.split(",").map((m) => m.trim());
+    candidateTags = candidateTags.filter((item, index) => candidateTags.indexOf(item) === index);
+    this.acronym.tagString = candidateTags.join(", "); // deduped tag string
+
+    // the tags array should only contain new tags, not tags pre-existing in the DB
+    this.acronym.tags = candidateTags.filter(f => !existingTags.includes(f));
 
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
@@ -123,6 +117,9 @@ export class NewAcronymComponent implements OnInit {
         if (data["rows"].length === 1) {
           // show success message
           this.status = "Acronym " + data["rows"][0]["acronym"] + " has been added ";
+
+          // refresh tag list
+          this.getTags();
         } else {
           this.status = "Uh oh, something is not right.  Contact your friendly SDS support person";
         }

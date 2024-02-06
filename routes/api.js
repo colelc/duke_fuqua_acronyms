@@ -85,6 +85,7 @@ try {
         //console.log("request.body", request.body);
 
         const data = request.body;
+        console.log("DATA IN NODEJS", data);
 
         // remove any trailing commas from the tag string
         const tagString = data["tagString"].replace(/,*$/, "");
@@ -101,15 +102,28 @@ try {
             console.log(values1.join(", "));
             const result1 = await pgClient.query(sql1, values1);
             console.log(result1["rows"][0]);
+            const acronymId = result1["rows"][0].id;
+            console.log("acronymId", acronymId);
 
             // if we have new tags, need to insert them into fuqua_acronym_tags
+            console.log("data[tags", data["tags"]);
             if (data["tags"].length > 0) {  
                 const sql2 = `INSERT INTO fuqua_acronym_tags (name, created_by, last_updated_by) VALUES($1, $2, $3) RETURNING *`;
                 console.log(sql2);
                 for (let newTag of data["tags"]) {
                     console.log(newTag);
                     const result2 = await pgClient.query(sql2, [newTag, "postgres", "postgres"]);
-                    console.log("result2", result2);
+                    console.log(result2["rows"][0]);
+                    const tagId = result2["rows"][0]["id"];
+                    console.log("tagId", tagId);
+
+                    const sql3 = `INSERT INTO fuqua_acronym_tag_map (acronym_id, tag_id, created_by, last_updated_by)
+                                    VALUES($1, $2, $3, $4) RETURNING *`;
+                    const values = [acronymId, tagId, "postgres", "postgres"];
+                    console.log(sql3);
+                    console.log(values);
+                    const result3 = await pgClient.query(sql3, values);
+                    console.log(result3["rows"][0].id);
                 }
             } // if have tags to add
 
