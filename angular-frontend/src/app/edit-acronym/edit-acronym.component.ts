@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Acronym } from '../interface/acronym-if';
 import { Tag } from '../interface/tag-if';
 import { AcronymsService } from '../service/acronyms.service';
@@ -22,14 +23,17 @@ export class EditAcronymComponent {
   tags: Tag[] = [];
 
   constructor(private acronymsService: AcronymsService, 
+            private activatedRoute: ActivatedRoute,
             private httpService: HttpService) {
 
-    this.acronym = this.initAcronym();
     this.disableElements("");
   }
 
   ngOnInit(): void {
-
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.id = params.get("id");
+    });
+    this.acronym = this.acronymsService.getAcronymById(Number(this.id));
     this.getTags();
   }
 

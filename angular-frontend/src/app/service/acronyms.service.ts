@@ -19,18 +19,13 @@ export class AcronymsService {
     this.acronyms = [...acronyms];
   }
   
-  // getAcronymById = (id: number) => {
-  //     for (let a of this.acronyms) {
-  //         if (a.id === id) {
-  //           return a;
-  //         }
-  //     }
-  //     return null;
-  // }
-
-  // setAcronym = (id: number, acronym: string) => {
-  //     console.log("setAcronym: id = " + id + " acronym = " + acronym);
-  // }
+  getAcronymById = (id: number):Acronym => {
+      const result = this.acronyms.filter((a) => a.id === id);
+      if (result.length === 1) {
+        return result[0];
+      }
+      return null;
+  }
 
   initAcronym = () => {
     return {
@@ -48,11 +43,5 @@ export class AcronymsService {
       lastUpdated: ""
     }
   }
-
-  // addAcronym = (newAcronym:Acronym) => {
-  //   console.log("addAcronym: ", newAcronym);
-  //   this.httpService.addAcronym(newAcronym);
-  // }
-
 
 }
