@@ -63,6 +63,29 @@ export class HttpService {
           );
     }
 
+    // PUT
+    editAcronym = (acronym: Acronym):Observable<Acronym> => {
+      console.log("HttpService.editAcronym", acronym);
+
+      return this.http.put<Acronym>("http://localhost:3050/api/edit_acronym", acronym/*, httpOptions*/)
+        .pipe(
+          catchError(this.handleError<Acronym>("edit Acronym", {
+            id: 0,
+            acronym: "",
+            refersTo: "",
+            definition: "",
+            areaKey: "",
+            active: false,
+            tags: [],
+            tagString: "",
+            createdBy: "",
+            created: "",
+            lastUpdatedBy: "",
+            lastUpdated: ""
+          }))
+        );
+    }
+
     private handleError<T>(operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
     

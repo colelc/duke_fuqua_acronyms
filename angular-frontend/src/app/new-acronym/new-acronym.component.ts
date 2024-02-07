@@ -24,7 +24,7 @@ export class NewAcronymComponent implements OnInit {
 
   constructor(private acronymsService: AcronymsService, private httpService: HttpService) {
     this.acronym = this.initAcronym();
-    this.disableElements("");
+    this.disableElements("", "input-box-status-good");
   }
 
   ngOnInit(): void {
@@ -55,15 +55,15 @@ export class NewAcronymComponent implements OnInit {
     return this.acronymsService.initAcronym();
   }
 
-  private disableElements = (statusMessage:string) => {
+  private disableElements = (statusMessage:string, messageStatusClass:string) => {
     this.status = statusMessage;
-    this.messageStatusClass = "input-box-status";
+    this.messageStatusClass = messageStatusClass;
     this.submitButtonClass = "submit-button-disabled";
   }
 
   private enableElements = () => {
     this.status = "";
-    this.messageStatusClass = "input-box-status-ready";
+    this.messageStatusClass = "input-box-status-good";
     this.submitButtonClass = "submit-button";
   }
 
@@ -81,7 +81,7 @@ export class NewAcronymComponent implements OnInit {
       && tagsOKStatus.length === 0) {
         this.enableElements();
       } else {
-        this.disableElements(tagsOKStatus);
+        this.disableElements(tagsOKStatus, tagsOKStatus === "" ? "input-box-status-good" : "input-box-status-bad");
       }
   }
 
@@ -130,7 +130,7 @@ export class NewAcronymComponent implements OnInit {
     this.acronym = this.initAcronym();
 
     // re-disable the submit button
-    this.disableElements(this.acronym.acronym + " has been added as a new acronym");
+    this.disableElements(this.acronym.acronym + " has been added as a new acronym", "input-box-status-good");
   }
 
   doTheAdd = () => {

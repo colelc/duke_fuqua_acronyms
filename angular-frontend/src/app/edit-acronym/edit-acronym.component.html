@@ -1,22 +1,22 @@
 
 <div>
     <form class="acronym-form">
-        <label for="acronyn-name">Acronym *</label>
+        <label for="acronyn-name">Acronym<span class="required-field"> *</span></label>
         <input type="text" name="acronym-name" size="10" class="input-box" required 
             (keyup)="onKeyUp()"
             [(ngModel)]="acronym.acronym" >
 
-        <label for="refers-to-name">Refers To *</label>
+        <label for="refers-to-name">Refers To<span class="required-field"> *</span></label>
         <input type="text" name="refers-to-name"  class="input-box" required 
             (keyup)="onKeyUp()"
             [(ngModel)]="acronym.refersTo">
 
-        <label for="definition-name">Definition *</label>
+        <label for="definition-name">Definition<span class="required-field"> *</span></label>
         <textarea name="definition-name" rows="8" maxlength="4096"  class="input-box" 
             (keyup)="onKeyUp()"
             [(ngModel)]="acronym.definition"></textarea>
         
-        <label for="area-key-name">Area Key *</label>
+        <label for="area-key-name">Area Key<span class="required-field"> *</span></label>
         <input type="text" name="area-key-name"  class="input-box" required
             (keyup)="onKeyUp()"
             [(ngModel)]="acronym.areaKey">
@@ -31,7 +31,7 @@
             (click)="onClick()">Submit</button>
 
         <span style="padding-top:1.5rem;"></span>
-        <label for="message-name">Status</label>
+        <label for="message-name"></label>
         <input type="text" name="message-name" [class]="messageStatusClass" readonly [(ngModel)]="status">
 
     </form>

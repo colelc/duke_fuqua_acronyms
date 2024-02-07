@@ -26,7 +26,7 @@ export class EditAcronymComponent {
             private activatedRoute: ActivatedRoute,
             private httpService: HttpService) {
 
-    this.disableElements("");
+    this.enableElements();
   }
 
   ngOnInit(): void {
@@ -57,13 +57,13 @@ export class EditAcronymComponent {
     });
   }
 
-  private initAcronym = () => {
-    return this.acronymsService.initAcronym();
-  }
+  // private initAcronym = () => {
+  //   return this.acronymsService.initAcronym();
+  // }
 
-  private disableElements = (statusMessage:string) => {
+  private disableElements = (statusMessage:string, messageStatusClass:string) => {
     this.status = statusMessage;
-    this.messageStatusClass = "input-box-status";
+    this.messageStatusClass = messageStatusClass;
     this.submitButtonClass = "submit-button-disabled";
   }
 
@@ -87,7 +87,7 @@ export class EditAcronymComponent {
       && tagsOKStatus.length === 0) {
         this.enableElements();
       } else {
-        this.disableElements(tagsOKStatus);
+        this.disableElements(tagsOKStatus, tagsOKStatus === "" ? "input-box-status-good" : "input-box-status-bad");
       }
   }
 
@@ -117,7 +117,7 @@ export class EditAcronymComponent {
     // the tags array should only contain new tags, not tags pre-existing in the DB
     this.acronym.tags = candidateTags.filter(f => !existingTags.includes(f));
 
-    this.httpService.addAcronym(this.acronym)
+    this.httpService.editAcronym(this.acronym)
       .subscribe(data => {
         console.log("data", data);
         if (data["rows"].length === 1) {
@@ -132,11 +132,12 @@ export class EditAcronymComponent {
       });
       console.log("SUCCESS");
 
-    // clear out fields
-    this.acronym = this.initAcronym();
+    // re-init
+    this.acronym = this.acronymsService.getAcronymById(Number(this.id));
+    this.getTags();
 
     // re-disable the submit button
-    this.disableElements(this.acronym.acronym + " has been added as a new acronym");
+    this.disableElements(this.acronym.acronym + " has been edited", "input-box-status-good");
   }
 
 
