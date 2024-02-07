@@ -13,8 +13,9 @@
             <!-- <img src="assets/images/checkmark-16.png" class="acronym-image" [hidden]="getHidden(a.id)"> -->
 
             <div>
-                <a [class]="calculateEditClass(a.id)" (click)="onEditAcronym(a.id)" >
-                    <img src="assets/images/pencil2.png" class="acronym-image">
+                <a class="enabled-link">
+                    <img src="assets/images/pencil2.png" class="acronym-image"  (click)="onEditAcronym(a.id)">
+                    <!-- <img src="assets/images/pencil2.png" class="acronym-image"  routerLink="['/edit-acronym', a.id]" > -->
                 </a>
             </div>
 

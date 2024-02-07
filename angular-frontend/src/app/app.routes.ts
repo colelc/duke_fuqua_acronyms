@@ -1,12 +1,9 @@
 import { Routes } from '@angular/router';
-import { AcronymsUserViewComponent } from './acronyms-user-view/acronyms-user-view.component';
 import { AcronymsAdminViewComponent } from './acronyms-admin-view/acronyms-admin-view.component';
+import { AcronymsUserViewComponent } from './acronyms-user-view/acronyms-user-view.component';
+import { EditAcronymComponent } from './edit-acronym/edit-acronym.component';
 import { NewAcronymComponent } from './new-acronym/new-acronym.component';
-import { AcronymsEditComponent } from './acronyms-edit/acronyms-edit.component';
-// import { CrisisListComponent } from './crisis-list/crisis-list.component';
-import { HeroesListComponent } from './heroes-list/heroes-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
     // {
@@ -27,9 +24,9 @@ export const routes: Routes = [
         component: NewAcronymComponent
     }, // admin form, when admin person has clicked "New Acronym"
     {
-        path: "edit", 
-        component: AcronymsEditComponent
-    },
+        path: "edit-acronym/:id", 
+        component: EditAcronymComponent
+    }, // admin form, when admin person has clicked "Edit Acronym"
     {
         path: "**",
         component: PageNotFoundComponent 

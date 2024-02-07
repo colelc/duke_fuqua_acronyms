@@ -2,9 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-//import { AcronymsListComponent } from './acronyms-list/acronyms-list.component';
 import { AcronymsAdminViewComponent } from './acronyms-admin-view/acronyms-admin-view.component';
-import { AcronymsEditComponent } from './acronyms-edit/acronyms-edit.component';
 import { AcronymsFooterComponent } from './acronyms-footer/acronyms-footer.component';
 import { AcronymsUserViewComponent } from './acronyms-user-view/acronyms-user-view.component';
 import { AcronymsService } from './service/acronyms.service';
@@ -13,14 +11,12 @@ import { HttpService } from './service/http.service';
 import { UserService } from './service/user.service';
 
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-//import { CrisisListComponent } from './crisis-list/crisis-list.component';
-//import { HeroesListComponent } from './heroes-list/heroes-list.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [ 
-    AcronymsFooterComponent, AcronymsEditComponent,
+    AcronymsFooterComponent, 
     AcronymsAdminViewComponent, AcronymsUserViewComponent
     , HttpClientModule
     , FormsModule

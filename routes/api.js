@@ -45,7 +45,7 @@ try {
         // sql += " ORDER BY a.id, t.name";
         // const result = await pgClient.query(sql);
 
-        const result = await pgClient.query("SELECT * FROM fuqua_acronyms ORDER BY acronym");
+        const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
         pgClient.release();
         response.json(result.rows);
     });
@@ -85,7 +85,6 @@ try {
         //console.log("request.body", request.body);
 
         const data = request.body;
-        console.log("DATA IN NODEJS", data);
 
         // remove any trailing commas from the tag string
         const tagString = data["tagString"].replace(/,*$/, "");
