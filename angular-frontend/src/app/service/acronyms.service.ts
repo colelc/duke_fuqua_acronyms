@@ -18,7 +18,7 @@ export class AcronymsService {
   setAcronyms = (acronyms:Acronym[]):void => {
     this.acronyms = [...acronyms];
   }
-  
+
   getAcronymById = (id: number):Acronym => {
       const result = this.acronyms.filter((a) => a.id === id);
       if (result.length === 1) {
@@ -29,7 +29,7 @@ export class AcronymsService {
 
   initAcronym = () => {
     return {
-      id: 0, 
+      id: null, 
       acronym: "", 
       refersTo: "", 
       definition: "",
@@ -41,6 +41,19 @@ export class AcronymsService {
       created: "",
       lastUpdatedBy: "",
       lastUpdated: ""
+    }
+  }
+
+  trimDedupeCandidateTags = (tagString:string, existingTags:string[]):{tagString:string; tags:string[]} => {
+    let candidateTags = tagString.split(",").map((m) => m.trim());
+    candidateTags = candidateTags.filter((item, index) => candidateTags.indexOf(item) === index);
+    const cleanedTagString = candidateTags.join(", "); // deduped tag string
+
+    const tags = candidateTags.filter(f => !existingTags.includes(f));
+    //return cleanedTagString;
+    return {
+      tagString: cleanedTagString,
+      tags: tags
     }
   }
 

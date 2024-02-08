@@ -16,6 +16,7 @@ import { HttpService } from '../service/http.service';
 export class EditAcronymComponent {
   id = "";
   acronym: Acronym;
+  //dbAcronym: Acronym;
   status: string = "";
   messageStatusClass : string = "";
   submitButtonClass: string = "";
@@ -34,8 +35,57 @@ export class EditAcronymComponent {
       this.id = params.get("id");
     });
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
+
+    //this.dbAcronym = this.acronymsService.initAcronym();
+    //this.getAcronymFromDb();
+   // this.getTagMapFromDb();
     this.getTags();
   }
+
+  // getAcronymFromDb = ():void => {
+  //   this.httpService.getAcronymById(Number(this.id))
+  //     .subscribe(data => {
+  //       //console.log("data", data);
+  //       const db = data[0];
+  //       //console.log("db", db);
+  //       this.dbAcronym.tagString = db["tag_string"];
+  //       this.dbAcronym.tags = [];
+  //       this.dbAcronym.refersTo = db["refers_to"];
+  //       this.dbAcronym.areaKey = db["area_key"];
+  //       this.dbAcronym.lastUpdatedBy = db["last_updated_by"];
+  //       this.dbAcronym.lastUpdated = db["last_updated"];
+  //       delete db["refers_to"];
+  //       delete db["area_key"];
+  //       delete db["tag_string"];
+  //       delete db["created_by"];
+  //       delete db["last_updated"];
+  //       delete db["last_updated_by"];
+  //     });
+  // }
+
+  // getTagMapFromDb = ():void => {
+  //   //console.log("editAcronym, getTagMapFromDb", this.id);
+  //   this.httpService.getAcronymTagMapById(Number(this.id))
+  //     .subscribe(data => {
+  //         //console.log("data", data);
+  //         for (let tm of data) {
+  //           console.log(tm);
+  //           tm.acronymId = Number(this.id);
+  //           tm.tagId = tm["tag_id"];
+  //           tm.createdBy = tm["created_by"];
+  //           tm.lastUpdated = tm["last_updated"];
+  //           tm.lastUpdatedBy = tm["last_updated_by"];
+
+  //           delete tm["tag_id"];
+  //           delete tm["created_by"];
+  //           delete tm["last_updated"];
+  //           delete tm["last_updated_by"];
+  //       }
+  //       this.dbTagMap = data;
+  //       console.log("this.dbTagMap", this.dbTagMap);
+  //      });
+  // }
+
 
   getTags = ():void => {
     // ok, not the best way to do this, but going with it for now
@@ -56,10 +106,6 @@ export class EditAcronymComponent {
       console.log("tags", this.tags);
     });
   }
-
-  // private initAcronym = () => {
-  //   return this.acronymsService.initAcronym();
-  // }
 
   private disableElements = (statusMessage:string, messageStatusClass:string) => {
     this.status = statusMessage;
@@ -109,20 +155,26 @@ export class EditAcronymComponent {
 
     this.acronym.tags = [];
 
-    // trim and dedupe candidate tags
-    let candidateTags = this.acronym.tagString.split(",").map((m) => m.trim());
-    candidateTags = candidateTags.filter((item, index) => candidateTags.indexOf(item) === index);
-    this.acronym.tagString = candidateTags.join(", "); // deduped tag string
+    const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString, existingTags);
+    this.acronym.tagString = tagObject["tagString"];
+    this.acronym.tags = tagObject["tags"];
+    
+    const toArray = this.acronym.tagString.split(",").map((m) => m.trim());
+    for (let item of toArray) {
+      if (!existingTags.includes(item)) {
+        this.acronym.tags.push(item);
+      }
+    }
 
-    // the tags array should only contain new tags, not tags pre-existing in the DB
-    this.acronym.tags = candidateTags.filter(f => !existingTags.includes(f));
+    console.log("acronym tagStrings", this.acronym.tagString);
+    console.log("acronym tags", this.acronym.tags);
 
-    this.httpService.editAcronym(this.acronym)
+    this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
         console.log("data", data);
         if (data["rows"].length === 1) {
           // show success message
-          this.status = "Acronym " + data["rows"][0]["acronym"] + " has been added ";
+          this.status = "Acronym " + data["rows"][0]["acronym"] + " has been edited and saved ";
 
           // refresh tag list
           this.getTags();

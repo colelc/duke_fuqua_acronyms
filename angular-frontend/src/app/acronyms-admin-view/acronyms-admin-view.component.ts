@@ -57,8 +57,7 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
   onEditAcronym = (id: number) => {
-    console.log("onEditAcronym: id is " + id);
-    //this.router.navigateByUrl("edit-acronym");
+    //console.log("onEditAcronym: id is " + id);
     this.router.navigate(["edit-acronym", id])
       .then((goodResult) => {
         if (!goodResult)
@@ -83,20 +82,5 @@ export class AcronymsAdminViewComponent implements OnInit {
 
   }
 
-  private initCheckmarks = () => {
-    for (let a of this.acronyms) {
-      this.saved.push({id: a.id, saved: false});
-    }
-  }
-
-  showCheckmark = (id: number) => {
-    const filtered = this.saved.filter((obj) => obj.id === id);
-    filtered[0].saved = true;
-  }
-
-  hideCheckmark = (id: number) => {
-    const filtered = this.saved.filter((obj) => obj.id === id);
-    filtered[0].saved = false;
-  }
 
 }

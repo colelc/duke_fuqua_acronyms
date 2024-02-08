@@ -12,9 +12,9 @@ const db = require("../db/postgres");
 
 
 // Define route for get a specific acronym by id
-// http://localhost:3050/acronyms/71
+// http://localhost:3050/acronym/71
 try {
-    router.get("/acronyms/:id", async (request, response) => {
+    router.get("/acronym/:id", async (request, response) => {
         const id = request.params.id;
         console.log(id);
 
@@ -26,7 +26,29 @@ try {
         const pgClient = await db.pool.connect();
         const result = await pgClient.query(queryConfig);
         pgClient.release();
-        console.log("result!", result.rows[0]);
+        console.log("result! /acronym/:id", result.rows[0]);
+        //response.send(result.rows);
+        response.status(200).json(result.rows);
+    });   
+} catch(err) {
+    return result.send("There was an error");
+}
+
+// Define route for get a tag map for a specific acronym
+// http://localhost:3050/api/acronym_tag_map/2
+try {
+    router.get("/acronym_tag_map/:id", async (request, response) => {
+        const id = request.params.id;
+
+        const queryConfig = {
+            text: "SELECT * FROM fuqua_acronym_tag_map WHERE acronym_id = $1",
+            values: [id]
+        };
+
+        const pgClient = await db.pool.connect();
+        const result = await pgClient.query(queryConfig);
+        pgClient.release();
+        console.log("result! /api/acronym_tag_map/:id", result.rows[0]);
         //response.send(result.rows);
         response.status(200).json(result.rows);
     });   
@@ -85,6 +107,7 @@ try {
         //console.log("request.body", request.body);
 
         const data = request.body;
+        console.log("data", data);
 
         // remove any trailing commas from the tag string
         const tagString = data["tagString"].replace(/,*$/, "");
@@ -96,6 +119,18 @@ try {
 
         try {
             await pgClient.query("BEGIN");
+
+            if (data["id"] !== null) {
+                const sql0 = "DELETE FROM fuqua_acronym_tag_map WHERE acronym_id = ($1)";
+                console.log(sql0);
+                console.log(data["id"]);
+                const result0 = await pgClient.query(sql0, [data["id"]]);
+                console.log("result0", result0);
+
+                const sql1 = "UPDATE fuqua_acronyms SET active = false WHERE id = ($1) RETURNING id";
+                const result1 = await pgClient.query(sql1, [data["id"]]);
+                console.log("result1", result1);
+            }
 
             console.log(sql1);
             console.log(values1.join(", "));

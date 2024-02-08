@@ -103,13 +103,9 @@ export class NewAcronymComponent implements OnInit {
 
     this.acronym.tags = [];
 
-    // trim and dedupe candidate tags
-    let candidateTags = this.acronym.tagString.split(",").map((m) => m.trim());
-    candidateTags = candidateTags.filter((item, index) => candidateTags.indexOf(item) === index);
-    this.acronym.tagString = candidateTags.join(", "); // deduped tag string
-
-    // the tags array should only contain new tags, not tags pre-existing in the DB
-    this.acronym.tags = candidateTags.filter(f => !existingTags.includes(f));
+    const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString, existingTags);
+    this.acronym.tagString = tagObject["tagString"];
+    this.acronym.tags = tagObject["tags"];
 
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
