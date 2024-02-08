@@ -40,7 +40,9 @@ export class AcronymsService {
       createdBy: "",
       created: "",
       lastUpdatedBy: "",
-      lastUpdated: ""
+      lastUpdated: "",
+      display: true,
+      highlight: false
     }
   }
 
@@ -54,6 +56,22 @@ export class AcronymsService {
     return {
       tagString: cleanedTagString,
       tags: tags
+    }
+  }
+
+  filter = (filterString: string) => {
+    console.log("filter, filterString is " + filterString);
+
+    const term = filterString.toUpperCase();
+
+    for (let a of this.acronyms) {
+      if (filterString.trim().length === 0) {
+        a.display = true;
+      } else if (!a.tagString.toUpperCase().includes(term)  &&  !a.acronym.toUpperCase().includes(term)) {
+          a.display = false;
+      } else {
+        a.display = true;
+      }
     }
   }
 

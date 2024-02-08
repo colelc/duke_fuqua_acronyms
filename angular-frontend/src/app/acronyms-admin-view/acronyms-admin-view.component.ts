@@ -47,6 +47,8 @@ export class AcronymsAdminViewComponent implements OnInit {
           delete d["created_by"];
           delete d["last_updated"];
           delete d["last_updated_by"];
+
+          d.display = true;
         }
 
         this.acronymsService.setAcronyms(data);
@@ -66,9 +68,9 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
 
-  calculateStriping = (isEven: boolean) => {
+  calculateStriping = (isEven: boolean):string => {
     if (isEven) {
-    return "acronym-data-cell";
+      return "acronym-data-cell";
     } else {
       return "acronym-data-cell acronym-data-cell-striping";
     }

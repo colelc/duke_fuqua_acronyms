@@ -129,10 +129,4 @@ export class NewAcronymComponent implements OnInit {
     this.disableElements(this.acronym.acronym + " has been added as a new acronym", "input-box-status-good");
   }
 
-  doTheAdd = () => {
-
-  }
-
-
-
 }

@@ -12,4 +12,5 @@ export interface Acronym {
     created: string;
     lastUpdatedBy: string;
     lastUpdated: string;
+    display: boolean;
 }
