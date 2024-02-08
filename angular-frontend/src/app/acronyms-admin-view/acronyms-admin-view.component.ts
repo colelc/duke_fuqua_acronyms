@@ -75,10 +75,14 @@ export class AcronymsAdminViewComponent implements OnInit {
   }
 
 
-  onDeleteAcronym = (acronymId: number) => {
-    console.log("onDeleteAcronym: acronymId is " + acronymId);
+  onDeleteAcronym = (id: number) => {
+   // console.log("onDeleteAcronym: acronymId is " + id);
 
-    // add code to actually delete the record
+    this.router.navigate(["delete-acronym", id])
+    .then((goodResult) => {
+      if (!goodResult)
+      console.log("Navigation result is " + goodResult);
+    });
 
   }
 

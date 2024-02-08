@@ -20,7 +20,7 @@
 
             <div>
                 <a class="enabled-link" (click)="onDeleteAcronym(a.id)" >
-                    <img src="assets/images/deleteCase.jpg" class="acronym-image">
+                    <img src="assets/images/deleteCase.jpg" class="acronym-image"  (click)="onDeleteAcronym(a.id)">
                 </a>
             </div>
         </div>

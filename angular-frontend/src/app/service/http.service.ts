@@ -69,6 +69,16 @@ export class HttpService {
     //     );
     // }
 
+    // DELETE
+    deleteAcronym = (id:string):Observable<number> => {
+      console.log("HttpService.deleteAcronym", id);
+
+      return this.http.delete<number>("http://localhost:3050/api/delete_acronym/" + id)
+        .pipe(
+          catchError(this.handleError<number>("delete Acronym", null))
+        );
+  }
+
     private handleError<T>(operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
     
