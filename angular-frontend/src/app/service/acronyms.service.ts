@@ -60,43 +60,17 @@ export class AcronymsService {
     }
   }
 
-  filter = (filterString: string) => {
-    //console.log("filter, filterString is " + filterString);
-
-    const term = filterString.toUpperCase();
-
-    for (let a of this.acronyms) {
-      if (filterString.trim().length === 0) {
-        a.display = true;
-      } else if (!a.tagString.toUpperCase().includes(term)  
-                &&  !a.acronym.toUpperCase().includes(term)
-                &&  !a.refersTo.toUpperCase().includes(term)
-                &&  !a.definition.toUpperCase().includes(term)
-      ) {
-          a.display = false;
-      } else {
-        a.display = true;
-
-      }
-    }
-  }
-
   applyFilter = () => {
-    console.log("applyFilter", this.filterTerm);
+   // console.log("applyFilter", this.filterTerm);
     for (let a of this.acronyms) {
-      // console.log(a.acronym.toUpperCase().trim(), " <==> " + this.filterTerm);
-      // if (a.acronym.toUpperCase().trim().includes(this.filterTerm.toUpperCase().trim())) {
-      //   console.log("YES");
-      // }
        if (!a.tagString.toUpperCase().includes(this.filterTerm.toUpperCase().trim())  
                 &&  !a.acronym.toUpperCase().includes(this.filterTerm.toUpperCase().trim())
                 &&  !a.refersTo.toUpperCase().includes(this.filterTerm.toUpperCase().trim())
                 &&  !a.definition.toUpperCase().includes(this.filterTerm.toUpperCase().trim())) {
-                  console.log("false");
           a.display = false;
       } else {
-       // console.log("true");
         a.display = true;
+
       }
     }
   }
