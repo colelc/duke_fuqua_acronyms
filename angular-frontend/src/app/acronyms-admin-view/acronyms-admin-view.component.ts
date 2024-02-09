@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Acronym } from '../interface/acronym-if';
-import { Saved } from '../interface/saved-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -18,8 +17,6 @@ import { HttpService } from '../service/http.service';
 export class AcronymsAdminViewComponent implements OnInit {
 
   acronyms: Acronym[] = [];
-  saved: Saved[] = [];
-  enableSaveIcon : string = "disabled-link";
 
   constructor(private acronymsService: AcronymsService, 
               private httpService: HttpService,
@@ -67,12 +64,21 @@ export class AcronymsAdminViewComponent implements OnInit {
       });
   }
 
-
   calculateStriping = (isEven: boolean):string => {
     if (isEven) {
       return "acronym-data-cell";
     } else {
       return "acronym-data-cell acronym-data-cell-striping";
+    }
+  }
+
+  highlight(text:string, display: boolean) {
+    if (this.acronymsService.getFilter().length === 0) {
+      return "<p>" + text+ "</p>";
+    } else {
+      return text.replace(new RegExp(this.acronymsService.getFilter(), "gi"), match => {
+        return '<span class="highlight-text">' + match + '</span>';
+    });
     }
   }
 

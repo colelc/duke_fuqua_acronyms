@@ -5,15 +5,16 @@
     <div class="acronym-header">Definition</div>
     <div class="acronym-header">Area Key</div>
     <div class="acronym-header">Tags</div>
-    <div class="acronym-header">Last Updated</div>
 
     @for (a of acronyms; track a.id) {
-        <div [class]="calculateStriping($even)" type="text">{{ a.acronym }}</div>
-        <div [class]="calculateStriping($even)" type="text">{{ a.refersTo }}</div>
-        <div [class]="calculateStriping($even)" type="text">{{ a.definition }}</div>
-        <div [class]="calculateStriping($even)" type="text">{{ a.areaKey }}</div>
-        <div [class]="calculateStriping($even)" type="text">{{ a.tagString }}</div>
-        <div [class]="calculateStriping($even)" type="text">{{ a.lastUpdatedBy }} {{ a.lastUpdated }}</div>
+        @if (a.display) {
+            <!-- <div [class]="calculateStriping($even)" type="text">{{ a.acronym }}</div> -->
+            <div [class]="calculateStriping($even)" type="text" [innerHTML]="highlight(a.acronym, a.display)"></div>
+            <div [class]="calculateStriping($even)" type="text" [innerHTML]="highlight(a.refersTo, a.display)"></div>
+            <div [class]="calculateStriping($even)" type="text" [innerHTML]="highlight(a.definition, a.display)"></div>
+            <div [class]="calculateStriping($even)" type="text" [innerHTML]="highlight(a.areaKey, a.display)"></div>
+            <div [class]="calculateStriping($even)" type="text" [innerHTML]="highlight(a.tagString, a.display)"></div>
+        }
     }
  </div>
 

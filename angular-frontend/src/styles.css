@@ -45,6 +45,10 @@ body {
 	 background-color: #f2f2f2;
   }
 
+  .highlight-text {
+    background-color: yellow;
+  }
+
   /* acronym form: shared by NewAcronymComponent and EditAcronym component */
 
   .acronym-form {

@@ -44,8 +44,11 @@ export class AppComponent implements OnInit {
   }
 
   onKeyupFilter = () => {
-    //console.log("onkeyup filter: filterTerm = " + this.filterTerm);
-    this.acronymsService.filter(this.filterTerm);
+    console.log("onkeyup filter: filterTerm = " + this.filterTerm);
+    //this.acronymsService.filter(this.filterTerm);
+
+    this.acronymsService.setFilter(this.filterTerm);
+    this.acronymsService.applyFilter();
   }
 
   home() {
