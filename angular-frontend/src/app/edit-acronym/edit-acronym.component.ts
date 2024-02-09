@@ -16,7 +16,6 @@ import { HttpService } from '../service/http.service';
 export class EditAcronymComponent {
   id = "";
   acronym: Acronym;
-  //dbAcronym: Acronym;
   status: string = "";
   messageStatusClass : string = "";
   submitButtonClass: string = "";
@@ -36,56 +35,8 @@ export class EditAcronymComponent {
     });
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
 
-    //this.dbAcronym = this.acronymsService.initAcronym();
-    //this.getAcronymFromDb();
-   // this.getTagMapFromDb();
     this.getTags();
   }
-
-  // getAcronymFromDb = ():void => {
-  //   this.httpService.getAcronymById(Number(this.id))
-  //     .subscribe(data => {
-  //       //console.log("data", data);
-  //       const db = data[0];
-  //       //console.log("db", db);
-  //       this.dbAcronym.tagString = db["tag_string"];
-  //       this.dbAcronym.tags = [];
-  //       this.dbAcronym.refersTo = db["refers_to"];
-  //       this.dbAcronym.areaKey = db["area_key"];
-  //       this.dbAcronym.lastUpdatedBy = db["last_updated_by"];
-  //       this.dbAcronym.lastUpdated = db["last_updated"];
-  //       delete db["refers_to"];
-  //       delete db["area_key"];
-  //       delete db["tag_string"];
-  //       delete db["created_by"];
-  //       delete db["last_updated"];
-  //       delete db["last_updated_by"];
-  //     });
-  // }
-
-  // getTagMapFromDb = ():void => {
-  //   //console.log("editAcronym, getTagMapFromDb", this.id);
-  //   this.httpService.getAcronymTagMapById(Number(this.id))
-  //     .subscribe(data => {
-  //         //console.log("data", data);
-  //         for (let tm of data) {
-  //           console.log(tm);
-  //           tm.acronymId = Number(this.id);
-  //           tm.tagId = tm["tag_id"];
-  //           tm.createdBy = tm["created_by"];
-  //           tm.lastUpdated = tm["last_updated"];
-  //           tm.lastUpdatedBy = tm["last_updated_by"];
-
-  //           delete tm["tag_id"];
-  //           delete tm["created_by"];
-  //           delete tm["last_updated"];
-  //           delete tm["last_updated_by"];
-  //       }
-  //       this.dbTagMap = data;
-  //       console.log("this.dbTagMap", this.dbTagMap);
-  //      });
-  // }
-
 
   getTags = ():void => {
     // ok, not the best way to do this, but going with it for now

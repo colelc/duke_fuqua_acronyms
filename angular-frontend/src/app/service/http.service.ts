@@ -4,6 +4,7 @@ import { Observable, catchError, of } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
 import { Tag } from "../interface/tag-if";
 import { TagMap } from "../interface/tag-map-if";
+import { User } from "../interface/user-if";
 import { ConfigService } from "./config.service";
 
 @Injectable({providedIn: "root"})
@@ -11,6 +12,16 @@ export class HttpService {
 
   
     constructor(private configService: ConfigService, private http : HttpClient) {}
+
+    // GET USER BY ID
+    getUser(dukeId:string): Observable<User> {
+      console.log("http service", dukeId);
+      return this.http.get<User>("http://localhost:3050/api/user/" + String(dukeId))
+      .pipe(
+        //tap(_ => console.log("fetched user")),
+        catchError(this.handleError<User>("getUser", null)),
+      );
+    }
 
 
     // GET ACRONYMS

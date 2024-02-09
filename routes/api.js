@@ -3,12 +3,27 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/postgres");
 
-// Define route for get all acronyms
-// http://localhost:3050/acronyms
-// router.get("/", (request, response) => {
-//     response.send("This is the get all acronyms route");
-// });
+// http://localhost:3050/user/lcc9
+try {
+    router.get("/user/:id", async (request, response) => {
+        const id = request.params.id;
+        console.log(id);
 
+        const queryConfig = {
+            text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1",
+            values: [id]
+        };
+
+        const pgClient = await db.pool.connect();
+        const result = await pgClient.query(queryConfig);
+        pgClient.release();
+        console.log("result! /user/:id", result.rows[0]);
+        //response.send(result.rows);
+        response.status(200).json(result.rows);
+    });   
+} catch(err) {
+    return result.send("There was an error");
+}
 
 
 // Define route for get a specific acronym by id
