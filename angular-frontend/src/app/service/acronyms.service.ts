@@ -67,7 +67,11 @@ export class AcronymsService {
     for (let a of this.acronyms) {
       if (filterString.trim().length === 0) {
         a.display = true;
-      } else if (!a.tagString.toUpperCase().includes(term)  &&  !a.acronym.toUpperCase().includes(term)) {
+      } else if (!a.tagString.toUpperCase().includes(term)  
+                &&  !a.acronym.toUpperCase().includes(term)
+                &&  !a.refersTo.toUpperCase().includes(term)
+                &&  !a.definition.toUpperCase().includes(term)
+      ) {
           a.display = false;
       } else {
         a.display = true;
