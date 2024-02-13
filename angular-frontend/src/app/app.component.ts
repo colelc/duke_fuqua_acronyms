@@ -11,6 +11,7 @@ import { HttpService } from './service/http.service';
 import { UserService } from './service/user.service';
 
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -55,7 +56,6 @@ export class AppComponent implements OnInit {
     this.administrator = this.userService.isUserAdmin();
 
     if (this.administrator === true) {
-      console.log("ADMIN");
       this.router.navigateByUrl("/admin");
     } else {
       console.log("USER");
@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(environment.where);
     this.home();
   }
 

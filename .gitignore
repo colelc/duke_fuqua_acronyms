@@ -1,6 +1,7 @@
 node_modules/
 .env
 angular-frontend/.angular/*
+angular-frontend/dist/*
 
 
 
