@@ -2,6 +2,7 @@ const config = require("./config/config");
 const debug = require("debug")("node-angular");
 const express = require("express")
 const bodyParser = require("body-parser")
+const path = require("path")
 
 const app = express();
 
@@ -16,6 +17,10 @@ app.use((request, response, next) => {
 // request body stuff
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+// point static path to dist
+//console.log("__dirname is ", __dirname);
+//app.use(express.static(path.join(__dirname, "dist")));
 
 // include route file(s)
 //const acronymRoutes = require("./routes/acronyms");
