@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    angularApiDomain: 'http://localhost.fuqua.duke.edu:8080',
-    where: 'production'
-    //angularApiDomain: 'https://go.fuqua.duke.edu',
+    where: 'production',
+    apiBase: 'http://localhost.fuqua.duke.edu:3050',
+    //apiBase: 'https://go.fuqua.duke.edu',
 };

@@ -10,13 +10,17 @@ import { ConfigService } from "./config.service";
 @Injectable({providedIn: "root"})
 export class HttpService {
 
-  
-    constructor(private configService: ConfigService, private http : HttpClient) {}
+    API_BASE: string;
+
+    constructor(private configService: ConfigService, private http : HttpClient) {
+      this.API_BASE = ConfigService.API_BASE;
+      console.log("this.API_BASE", this.API_BASE);
+    }
 
     // GET USER BY ID
     getUser(dukeId:string): Observable<User> {
       console.log("http service", dukeId);
-      return this.http.get<User>("http://localhost:3050/api/user/" + String(dukeId))
+      return this.http.get<User>(this.API_BASE + "/api/user/" + String(dukeId))
       .pipe(
         //tap(_ => console.log("fetched user")),
         catchError(this.handleError<User>("getUser", null)),
@@ -26,7 +30,7 @@ export class HttpService {
 
     // GET ACRONYMS
     getAcronyms(): Observable<Acronym[]> {
-      return this.http.get<Acronym[]>("http://localhost:3050/api/acronyms")
+      return this.http.get<Acronym[]>(this.API_BASE + "/api/acronyms")
         .pipe(
           //tap(_ => console.log("fetched acronyms")),
           catchError(this.handleError<Acronym[]>("getAcronyms", [])),
@@ -35,7 +39,7 @@ export class HttpService {
 
     // GET ACRONYM BY ID
     getAcronymById(id:number): Observable<Acronym> {
-      return this.http.get<Acronym>("http://localhost:3050/api/acronym/" + String(id))
+      return this.http.get<Acronym>(this.API_BASE + "/api/acronym/" + String(id))
       .pipe(
         //tap(_ => console.log("fetched acronyms")),
         catchError(this.handleError<Acronym>("getAcronyms", null)),
@@ -44,7 +48,7 @@ export class HttpService {
 
     // GET ACRONYM_TAGS
     getAcronymTags(): Observable<Tag[]> {
-      return this.http.get<Tag[]>("http://localhost:3050/api/acronym_tags")
+      return this.http.get<Tag[]>(this.API_BASE + "/api/acronym_tags")
         .pipe(
           //tap(_ => console.log("fetched acronyms")),
           catchError(this.handleError<Tag[]>("getAcronymTags", [])),
@@ -53,7 +57,7 @@ export class HttpService {
 
     // GET ACRONYM_TAG_MAP
     getAcronymTagMapById(id:number): Observable<TagMap[]> {
-      return this.http.get<TagMap[]>("http://localhost:3050/api/acronym_tag_map/" + String(id))
+      return this.http.get<TagMap[]>(this.API_BASE + "/api/acronym_tag_map/" + String(id))
         .pipe(
           //tap(_ => console.log("fetched acronyms")),
           catchError(this.handleError<TagMap[]>("getAcronymTagMap", [])),
@@ -64,7 +68,7 @@ export class HttpService {
     addAcronym = (acronym: Acronym):Observable<Acronym> => {
         console.log("HttpService.addAcronym", acronym);
 
-        return this.http.post<Acronym>("http://localhost:3050/api/new_acronym", acronym/*, httpOptions*/)
+        return this.http.post<Acronym>(this.API_BASE + "/api/new_acronym", acronym/*, httpOptions*/)
           .pipe(
             catchError(this.handleError<Acronym>("new Acronym", acronym))
           );
@@ -74,7 +78,7 @@ export class HttpService {
     // editAcronym = (acronym: Acronym):Observable<Acronym> => {
     //   console.log("HttpService.editAcronym", acronym);
 
-    //   return this.http.put<Acronym>("http://localhost:3050/api/edit_acronym", acronym/*, httpOptions*/)
+    //   return this.http.put<Acronym>(this.API_BASE + "/api/edit_acronym", acronym/*, httpOptions*/)
     //     .pipe(
     //       catchError(this.handleError<Acronym>("edit Acronym", acronym))
     //     );
@@ -84,7 +88,7 @@ export class HttpService {
     deleteAcronym = (id:string):Observable<number> => {
       console.log("HttpService.deleteAcronym", id);
 
-      return this.http.delete<number>("http://localhost:3050/api/delete_acronym/" + id)
+      return this.http.delete<number>(this.API_BASE + "/api/delete_acronym/" + id)
         .pipe(
           catchError(this.handleError<number>("delete Acronym", null))
         );

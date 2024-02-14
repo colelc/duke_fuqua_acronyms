@@ -1,0 +1,15 @@
+.submit-button {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: darkred;
+    cursor: pointer;
+    opacity: 1.0;
+  } 
+
+  .submit-button-disabled {
+    color: white;
+    background-color: dark-red;
+    pointer-events: none;
+    opacity: 0.3;
+  }
