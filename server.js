@@ -28,6 +28,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/test", (request, response) => {
+    console.log(request.url);
+    console.log(request.rawHeaders);
     response.send("<h4>TESTING Acronyms Node.js backend</h4>");
 });
 
