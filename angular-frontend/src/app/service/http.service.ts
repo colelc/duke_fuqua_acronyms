@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, catchError, of } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
@@ -20,7 +20,7 @@ export class HttpService {
     // GET USER BY ID
     getUser(dukeId:string): Observable<User> {
       console.log("http service", dukeId);
-      return this.http.get<User>(this.API_BASE + "/api/user/" + String(dukeId))
+      return this.http.get<User>(this.API_BASE + "/api/user/" + String(dukeId), {/*withCredentials: true*/})
       .pipe(
         //tap(_ => console.log("fetched user")),
         catchError(this.handleError<User>("getUser", null)),
@@ -30,7 +30,7 @@ export class HttpService {
 
     // GET ACRONYMS
     getAcronyms(): Observable<Acronym[]> {
-      return this.http.get<Acronym[]>(this.API_BASE + "/api/acronyms")
+      return this.http.get<Acronym[]>(this.API_BASE + "/api/acronyms", {/*withCredentials:true*/})
         .pipe(
           //tap(_ => console.log("fetched acronyms")),
           catchError(this.handleError<Acronym[]>("getAcronyms", [])),
@@ -39,7 +39,7 @@ export class HttpService {
 
     // GET ACRONYM BY ID
     getAcronymById(id:number): Observable<Acronym> {
-      return this.http.get<Acronym>(this.API_BASE + "/api/acronym/" + String(id))
+      return this.http.get<Acronym>(this.API_BASE + "/api/acronym/" + String(id), {/*withCredentials:true*/})
       .pipe(
         //tap(_ => console.log("fetched acronyms")),
         catchError(this.handleError<Acronym>("getAcronyms", null)),
@@ -48,7 +48,7 @@ export class HttpService {
 
     // GET ACRONYM_TAGS
     getAcronymTags(): Observable<Tag[]> {
-      return this.http.get<Tag[]>(this.API_BASE + "/api/acronym_tags")
+      return this.http.get<Tag[]>(this.API_BASE + "/api/acronym_tags", {/*withCredentials:true*/})
         .pipe(
           //tap(_ => console.log("fetched acronyms")),
           catchError(this.handleError<Tag[]>("getAcronymTags", [])),
@@ -57,7 +57,7 @@ export class HttpService {
 
     // GET ACRONYM_TAG_MAP
     getAcronymTagMapById(id:number): Observable<TagMap[]> {
-      return this.http.get<TagMap[]>(this.API_BASE + "/api/acronym_tag_map/" + String(id))
+      return this.http.get<TagMap[]>(this.API_BASE + "/api/acronym_tag_map/" + String(id), {/*withCredentials:true*/})
         .pipe(
           //tap(_ => console.log("fetched acronyms")),
           catchError(this.handleError<TagMap[]>("getAcronymTagMap", [])),
@@ -67,8 +67,10 @@ export class HttpService {
     // POST
     addAcronym = (acronym: Acronym):Observable<Acronym> => {
         console.log("HttpService.addAcronym", acronym);
+        const headers:HttpHeaders = new HttpHeaders({});
 
-        return this.http.post<Acronym>(this.API_BASE + "/api/new_acronym", acronym/*, httpOptions*/)
+        //return this.http.post<Acronym>(this.API_BASE + "/api/new_acronym", acronym, {/*withCredentials:true*/})
+        return this.http.post<Acronym>(this.API_BASE + "/api/new_acronym", acronym, {})
           .pipe(
             catchError(this.handleError<Acronym>("new Acronym", acronym))
           );
@@ -78,7 +80,7 @@ export class HttpService {
     // editAcronym = (acronym: Acronym):Observable<Acronym> => {
     //   console.log("HttpService.editAcronym", acronym);
 
-    //   return this.http.put<Acronym>(this.API_BASE + "/api/edit_acronym", acronym/*, httpOptions*/)
+    //   return this.http.put<Acronym>(this.API_BASE + "/api/edit_acronym", acronym, {/*withCredentials:true*/})
     //     .pipe(
     //       catchError(this.handleError<Acronym>("edit Acronym", acronym))
     //     );
@@ -88,7 +90,7 @@ export class HttpService {
     deleteAcronym = (id:string):Observable<number> => {
       console.log("HttpService.deleteAcronym", id);
 
-      return this.http.delete<number>(this.API_BASE + "/api/delete_acronym/" + id)
+      return this.http.delete<number>(this.API_BASE + "/api/delete_acronym/" + id, {withCredentials: true})
         .pipe(
           catchError(this.handleError<number>("delete Acronym", null))
         );
