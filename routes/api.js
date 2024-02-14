@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/postgres");
 
-// http://localhost:3050/user/lcc9
 try {
     router.get("/user/:id", async (request, response) => {
         const id = request.params.id;
@@ -27,7 +26,7 @@ try {
 
 
 // Define route for get a specific acronym by id
-// http://localhost:3050/acronym/71
+// https://localhost.fuqua.duke.edu:8443/acronym/71
 try {
     router.get("/acronym/:id", async (request, response) => {
         const id = request.params.id;
@@ -71,7 +70,7 @@ try {
     return result.send("There was an error");
 }
 
-// http://localhost:3050/api/acronyms
+// https://localhost.fuqua.duke.edu:8443/api/acronyms
 try {
     router.get("/acronyms", async (request, response, next) => {
         const pgClient = await db.pool.connect();
@@ -85,6 +84,8 @@ try {
         const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
         pgClient.release();
         response.json(result.rows);
+        console.log("result");
+        console.log(result.rows[0]);
     });
 } catch(err) {
     return result.send("There was an error", err);

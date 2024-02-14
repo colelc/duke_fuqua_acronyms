@@ -1,8 +1,10 @@
 const config = require("./config/config");
-const debug = require("debug")("node-angular");
+//const debug = require("debug")("node-angular");
 const express = require("express")
 const bodyParser = require("body-parser")
-const path = require("path")
+//const path = require("path")
+const https = require("node:https");
+const fs = require("fs");
 
 const app = express();
 
@@ -18,39 +20,34 @@ app.use((request, response, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-// point static path to dist
-//console.log("__dirname is ", __dirname);
-//app.use(express.static(path.join(__dirname, "dist")));
-
-// include route file(s)
-//const acronymRoutes = require("./routes/acronyms");
 const apiRoutes = require("./routes/api");
-
-// inline route for basic hello world test
-// http://localhost:3050/test
-app.get("/test", (request, response) => {
-    response.send("<h4>Acronyms Node.js backend</h4>");
-});
-
-const onListening = () => {
-    const addr = server.address();
-    const bind = typeof port === "string" ? "pipe " + config.data.apiPort : "port " + config.data.apiPort;
-    debug("Listening on " + bind);
-  };
-
-const onError = error => {
-    if (error.syscall !== "listen") {
-        throw error;
-    }
-};
-
-app.on("listening", onListening);
-app.on("error", onError);
-
-// use the routes
-//app.use("/acronyms", acronymRoutes);
 app.use("/api", apiRoutes);
 
-app.listen(config.data.apiPort, () => {
-    console.log(`Server running on port ${config.data.apiPort}`);
+app.get("/", (request, response) => {
+    response.send("<h4>Acronyms Node.js backend HTTPS</h4>");
 });
+
+app.get("/test", (request, response) => {
+    response.send("<h4>TESTING Acronyms Node.js backend</h4>");
+});
+
+const options = {
+    pfx: fs.readFileSync(config.data.certFile),
+    passphrase: config.data.certPassword
+  };
+
+
+const server = https.createServer(options, app);
+
+// const onListening = () => {
+//     const addr = server.address();
+//     const bind = typeof port === "string" ? "pipe " + config.data.httpsApiPort : "port " + config.data.httpsApiPort;
+//     console.log("Listening on " + bind);
+// };
+
+// server.on("listening", onListening);
+
+server.listen(config.data.httpsApiPort, () => {
+    console.log(`Listening on ${config.data.httpsBaseUrl}:${config.data.httpsApiPort}`);
+});
+
