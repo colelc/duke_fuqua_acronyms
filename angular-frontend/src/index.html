@@ -6,8 +6,17 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script type="module">
+    import '@fsb/fw-auth/dist/fw-auth.js';
+  </script>
 </head>
 <body>
+  <fw-auth></fw-auth>
+  <!-- <fw-auth url="https://authdev.fuqua.duke.edu/auth/onelink?service=" 
+		validateUrl="https://authdev.fuqua.duke.edu/auth/getjwt" 
+ 		auto="true">
+  </fw-auth>  -->
+
   <app-home></app-home>
 </body>
 

@@ -90,7 +90,7 @@ export class HttpService {
     deleteAcronym = (id:string):Observable<number> => {
       console.log("HttpService.deleteAcronym", id);
 
-      return this.http.delete<number>(this.API_BASE + "/api/delete_acronym/" + id, {withCredentials: true})
+      return this.http.delete<number>(this.API_BASE + "/api/delete_acronym/" + id, {/*withCredentials: true*/})
         .pipe(
           catchError(this.handleError<number>("delete Acronym", null))
         );

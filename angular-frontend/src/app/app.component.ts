@@ -53,13 +53,16 @@ export class AppComponent implements OnInit {
   }
 
   home() {
+    //const authData = document.querySelector('fw-auth').getData();
+    const authData = document.querySelector('fw-auth');
+    console.log("authData", authData);
     this.administrator = this.userService.isUserAdmin();
 
     if (this.administrator === true) {
-      this.router.navigateByUrl("/admin");
+      this.router.navigateByUrl("/acronyms/admin");
     } else {
       console.log("USER");
-      this.router.navigateByUrl("/view");
+      this.router.navigateByUrl("/acronyms/view");
     }
   }
 

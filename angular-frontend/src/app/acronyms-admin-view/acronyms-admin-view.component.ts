@@ -57,7 +57,7 @@ export class AcronymsAdminViewComponent implements OnInit {
 
   onEditAcronym = (id: number) => {
     //console.log("onEditAcronym: id is " + id);
-    this.router.navigate(["edit-acronym", id])
+    this.router.navigate(["acronyms", "edit-acronym", id])
       .then((goodResult) => {
         if (!goodResult)
         console.log("Navigation result is " + goodResult);
@@ -86,7 +86,7 @@ export class AcronymsAdminViewComponent implements OnInit {
   onDeleteAcronym = (id: number) => {
    // console.log("onDeleteAcronym: acronymId is " + id);
 
-    this.router.navigate(["delete-acronym", id])
+    this.router.navigate(["acronyms", "delete-acronym", id])
     .then((goodResult) => {
       if (!goodResult)
       console.log("Navigation result is " + goodResult);
