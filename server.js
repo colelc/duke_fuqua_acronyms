@@ -3,12 +3,14 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const https = require("node:https");
 const fs = require("fs");
+const fwAuth = require("./services/authentication_service")
 
 const app = express();
 
 // middleware to intercept request
 app.use((request, response, next) => {
     console.log(`Intercepted request: ${request.method} ${request.url}`);
+    fwAuth.doAuthentication(request);
     //console.log("request.rawHeaders", request.rawHeaders);
     next();
 });
