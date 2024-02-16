@@ -13,7 +13,7 @@ const data = {
     httpsBaseUrl: ENV === "d" ? process.env.D_BASE_API_URL : process.env.P_BASE_API_URL,
     httpsApiPort: ENV === "d" ? process.env.D_HTTPS_API_PORT : process.env.P_HTTPS_API_PORT,
 
-    //apiPort: ENV === "d" ? process.env.D_REST_API_PORT : process.env.P_REST_API_PORT,
+    originPort: ENV === "d" ? process.env.D_ORIGIN_PORT : process.env.P_ORIGIN_PORT,
 
     postgres: {
         host: ENV === "d" ? process.env.D_POSTGRES_HOST : process.env.P_POSTGRES_HOST,

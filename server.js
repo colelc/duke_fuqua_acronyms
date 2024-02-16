@@ -9,8 +9,11 @@ const fs = require("fs");
 const app = express();
 
 // handle CORS
+const allowedOrigin = config.data.httpsBaseUrl + ":" + config.data.originPort;
+
 app.use((request, response, next) => {
-    response.setHeader("Access-Control-Allow-Origin", "https://localhost.fuqua.duke.edu:8443");
+    //response.setHeader("Access-Control-Allow-Origin", ["https://localhost.fuqua.duke.edu:8443"]);
+    response.setHeader("Access-Control-Allow-Origin", [allowedOrigin]);
     response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS, PATCH");
     response.setHeader("Access-Control-Allow-Credentials", true);
