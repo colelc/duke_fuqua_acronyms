@@ -70,6 +70,8 @@ try {
 
 try {
     router.get("/acronyms", async (request, response, next) => {
+        console.log("request.rawHeaders");
+        console.log(request.rawHeaders);
         const pgClient = await db.pool.connect();
 
         // let sql = "SELECT t.name, a.* FROM fuqua_acronyms a, fuqua_acronym_tags t ";

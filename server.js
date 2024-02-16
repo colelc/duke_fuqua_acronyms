@@ -1,12 +1,17 @@
 const config = require("./config/config");
-//const debug = require("debug")("node-angular");
 const express = require("express")
 const bodyParser = require("body-parser")
-//const path = require("path")
 const https = require("node:https");
 const fs = require("fs");
 
 const app = express();
+
+// middleware to intercept request
+app.use((request, response, next) => {
+    console.log(`Intercepted request: ${request.method} ${request.url}`);
+    //console.log("request.rawHeaders", request.rawHeaders);
+    next();
+});
 
 // handle CORS
 const allowedOrigin = config.data.httpsBaseUrl + ":" + config.data.originPort;
@@ -24,16 +29,17 @@ app.use((request, response, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+
 const apiRoutes = require("./routes/api");
 app.use("/api", apiRoutes);
 
 app.get("/", (request, response) => {
+    console.log(`${request.method} ${request.url}`);
     response.send("<h4>Acronyms Node.js backend HTTPS</h4>");
 });
 
 app.get("/test", (request, response) => {
-    console.log(request.url);
-    console.log(request.rawHeaders);
+    console.log(`${request.method} ${request.url}`);
     response.send("<h4>TESTING Acronyms Node.js backend</h4>");
 });
 
