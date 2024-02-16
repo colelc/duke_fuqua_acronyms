@@ -5,31 +5,31 @@ import { HttpService } from "./http.service";
 
 @Injectable({providedIn: "root"})
 export class UserService {
-    user: User;
+    //user: User;
     dukeId: string;
 
-    // private user : User = {
-    //     dukeId: "lcc9",
-    //     firstName: "Linda",
-    //     lastName: "Cole",
-    //     isAdmin: true
-    // };
+    private user : User = {
+        dukeId: "lcc9",
+        firstName: "Linda",
+        lastName: "Cole",
+        isAdmin: true
+    };
 
     constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute) {
         //this.user = this.getUser();
-        this.activatedRoute.paramMap.subscribe((params) => {
-            this.dukeId = params.get("id");
-          });
+        // this.activatedRoute.paramMap.subscribe((params) => {
+        //     this.dukeId = params.get("id");
+        //   });
 
-        this.getUser();
+        // this.getUser();
     }
 
-    getUser = ():void => {
-        //return this.user;
-        console.log("user service", this.dukeId);
-        this.httpService.getUser(this.dukeId)
-        .subscribe(data => {
-            this.user = data;
+    getUser = ():User => {
+        return this.user;
+      //  console.log("user service", this.dukeId);
+      //  this.httpService.getUser(this.dukeId)
+       // .subscribe(data => {
+       //     this.user = data;
             // for (let d of data) {
             // d.tagString = d["tag_string"];
             // d.tags = [];
@@ -45,7 +45,7 @@ export class UserService {
             // delete d["last_updated_by"];
 
             // d.display = true;
-            });
+      //      });
 
        // this.acronymsService.setAcronyms(data);
         // this.acronyms = data;

@@ -1,11 +1,11 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+//import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AcronymsAdminViewComponent } from './acronyms-admin-view/acronyms-admin-view.component';
 import { AcronymsFooterComponent } from './acronyms-footer/acronyms-footer.component';
 import { AcronymsUserViewComponent } from './acronyms-user-view/acronyms-user-view.component';
-import { AuthInterceptor } from './interceptor/auth-interceptor';
+//import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { AcronymsService } from './service/acronyms.service';
 import { ConfigService } from './service/config.service';
 import { HttpService } from './service/http.service';
@@ -20,13 +20,13 @@ import { environment } from '../environments/environment';
   imports: [ 
     AcronymsFooterComponent, 
     AcronymsAdminViewComponent, AcronymsUserViewComponent
-    , HttpClientModule
+    //, HttpClientModule
     , FormsModule
     ,RouterOutlet
     , RouterLink
   ],
-  providers: [AcronymsService, UserService, HttpService, ConfigService, AuthInterceptor, Router
-    , {provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true}
+  providers: [AcronymsService, UserService, HttpService, ConfigService, /*AuthInterceptor,*/ Router
+   // , {provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true}
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
