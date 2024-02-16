@@ -16,7 +16,7 @@ try {
         const pgClient = await db.pool.connect();
         const result = await pgClient.query(queryConfig);
         pgClient.release();
-        console.log("result! /user/:id", result.rows[0]);
+        //console.log("result! /user/:id", result.rows[0]);
         //response.send(result.rows);
         response.status(200).json(result.rows);
     });   
@@ -26,7 +26,6 @@ try {
 
 
 // Define route for get a specific acronym by id
-// https://localhost.fuqua.duke.edu:8443/acronym/71
 try {
     router.get("/acronym/:id", async (request, response) => {
         const id = request.params.id;
@@ -49,7 +48,6 @@ try {
 }
 
 // Define route for get a tag map for a specific acronym
-// http://localhost:3050/api/acronym_tag_map/2
 try {
     router.get("/acronym_tag_map/:id", async (request, response) => {
         const id = request.params.id;
@@ -70,7 +68,6 @@ try {
     return result.send("There was an error");
 }
 
-// https://localhost.fuqua.duke.edu:8443/api/acronyms
 try {
     router.get("/acronyms", async (request, response, next) => {
         const pgClient = await db.pool.connect();
