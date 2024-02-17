@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require("../db/postgres");
 
 
-const doAuthentication = ((request) => {
+const getIdentity = ((request) => {
     console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
 
     const jwt = extractJWT(request.rawHeaders);
@@ -69,4 +69,4 @@ const getClaims = ((jwt) => {
     }
 });
 
-module.exports = { doAuthentication }
+module.exports = { getIdentity }
