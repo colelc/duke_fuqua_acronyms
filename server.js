@@ -10,7 +10,12 @@ const app = express();
 // middleware to intercept request
 app.use((request, response, next) => {
     console.log(`Intercepted request: ${request.method} ${request.url}`);
-    fwAuth.doAuthentication(request);
+    const authenticated = fwAuth.doAuthentication(request);
+    if (authenticated === null) {
+        console.log("Could not authenticate");
+    } else {
+        console.log("authenticated"); // what next - add boolean somewhere in the request body?
+    }
     //console.log("request.rawHeaders", request.rawHeaders);
     next();
 });
