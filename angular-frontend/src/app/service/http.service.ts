@@ -20,7 +20,6 @@ export class HttpService {
     // GET USER BY ID
     // getUser(dukeId:string): Observable<User> {
       getUser(): Observable<User> {
-      console.log("http service","getUser ");
       // return this.http.get<User>(this.API_BASE + "/api/user/" + String(dukeId))
       return this.http.get<User>(this.API_BASE + "/api/user")
       .pipe(

@@ -26,7 +26,7 @@ const doAuthentication = ((request) => {
     request.identity = identity;
     console.log("request.dukeId", request.dukeId);
     //console.log("request.identity", request.identity);
-    return identity;
+   // return identity;
 });
 
 const extractJWT = ((rawHeaders) => {
