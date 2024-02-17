@@ -9,14 +9,9 @@ const app = express();
 
 // middleware to intercept request
 app.use((request, response, next) => {
-    console.log(`Intercepted request: ${request.method} ${request.url}`);
-    const authenticated = fwAuth.doAuthentication(request);
-    if (authenticated === null) {
-        console.log("Could not authenticate");
-    } else {
-        console.log("authenticated"); // what next - add boolean somewhere in the request body?
+    if (!request.url.includes("favicon")) {
+        fwAuth.doAuthentication(request); // put the identity object into the request
     }
-    //console.log("request.rawHeaders", request.rawHeaders);
     next();
 });
 
@@ -57,14 +52,6 @@ const options = {
 
 
 const server = https.createServer(options, app);
-
-// const onListening = () => {
-//     const addr = server.address();
-//     const bind = typeof port === "string" ? "pipe " + config.data.httpsApiPort : "port " + config.data.httpsApiPort;
-//     console.log("Listening on " + bind);
-// };
-
-// server.on("listening", onListening);
 
 server.listen(config.data.httpsApiPort, () => {
     console.log(`Listening on ${config.data.httpsBaseUrl}:${config.data.httpsApiPort}`);

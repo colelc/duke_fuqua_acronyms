@@ -39,29 +39,27 @@ export class AppComponent implements OnInit {
     private router: Router) {
   }
 
-  isAdministrator = () => {
-    return this.userService.isUserAdmin();
-  }
-
   onKeyupFilter = () => {
-    //console.log("onkeyup filter: filterTerm = " + this.filterTerm);
-    //this.acronymsService.filter(this.filterTerm);
-
     this.acronymsService.setFilter(this.filterTerm);
     this.acronymsService.applyFilter();
   }
 
   home() {
-    //const authData = document.querySelector('fw-auth').getData();
-    //const authData = document.querySelector('fw-auth');
-    //console.log("authData", authData);
-    this.administrator = this.userService.isUserAdmin();
-
-    if (this.administrator === true) {
-      console.log("ADMIN");
-      this.router.navigateByUrl("/acronyms/admin");
-    } else {
-      console.log("USER");
+    try {
+      this.userService.getUser().subscribe(data => {
+        if (data.length > 0) {
+          console.log("ADMIN");
+          this.administrator = true;
+          this.router.navigateByUrl("/acronyms/admin");
+        } else {
+          console.log("USER");
+          this.administrator = false;
+          this.router.navigateByUrl("/acronyms/view");
+        }
+      });
+    } catch(err) {
+      console.log("uh oh, a backend error - we will default to non-admin status");
+      this.administrator = false;
       this.router.navigateByUrl("/acronyms/view");
     }
   }

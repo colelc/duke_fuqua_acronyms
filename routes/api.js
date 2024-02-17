@@ -4,21 +4,21 @@ const router = express.Router();
 const db = require("../db/postgres");
 
 try {
-    router.get("/user/:id", async (request, response) => {
-        const id = request.params.id;
-        console.log(id);
+   // router.get("/user/:id", async (request, response) => {
+    router.get("/user", async (request, response) => {
+    const id = request.identity.dukeid;
 
-        const queryConfig = {
-            text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1",
-            values: [id]
-        };
+    const queryConfig = {
+        text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1",
+        values: [id]
+    };
 
-        const pgClient = await db.pool.connect();
-        const result = await pgClient.query(queryConfig);
-        pgClient.release();
-        //console.log("result! /user/:id", result.rows[0]);
-        //response.send(result.rows);
-        response.status(200).json(result.rows);
+    const pgClient = await db.pool.connect();
+    const result = await pgClient.query(queryConfig);
+    pgClient.release();
+    console.log("result! /user/" + id, result.rows);
+    //response.send(result.rows);
+    response.status(200).json(result.rows);
     });   
 } catch(err) {
     return result.send("There was an error");
@@ -70,8 +70,8 @@ try {
 
 try {
     router.get("/acronyms", async (request, response, next) => {
-        console.log("request.rawHeaders");
-        console.log(request.rawHeaders);
+        //console.log("request.rawHeaders");
+       // console.log(request.rawHeaders);
         const pgClient = await db.pool.connect();
 
         // let sql = "SELECT t.name, a.* FROM fuqua_acronyms a, fuqua_acronym_tags t ";
@@ -83,8 +83,8 @@ try {
         const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
         pgClient.release();
         response.json(result.rows);
-        console.log("result");
-        console.log(result.rows[0]);
+       // console.log("result");
+       // console.log(result.rows[0]);
     });
 } catch(err) {
     return result.send("There was an error", err);

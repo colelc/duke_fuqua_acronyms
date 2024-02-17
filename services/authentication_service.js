@@ -1,5 +1,11 @@
+
+const express = require("express");
+const router = express.Router();
+const db = require("../db/postgres");
+
+
 const doAuthentication = ((request) => {
-    console.log(`doAuthentication: ${request.method} ${request.url}`);
+    console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
 
     const jwt = extractJWT(request.rawHeaders);
     // console.log("-------------------------------------------------");
@@ -10,9 +16,17 @@ const doAuthentication = ((request) => {
         return null;
     }
 
-    const claims = getClaims(jwt);
-    console.log("claims", claims);
-    return "";
+    const identity = getClaims(jwt);
+    if (identity === null) {
+        return null;
+    }
+
+    // Extract dukeId - put it in the request
+    request.dukeId = identity.dukeid;
+    request.identity = identity;
+    console.log("request.dukeId", request.dukeId);
+    //console.log("request.identity", request.identity);
+    return identity;
 });
 
 const extractJWT = ((rawHeaders) => {
@@ -54,6 +68,5 @@ const getClaims = ((jwt) => {
         return null;
     }
 });
-
 
 module.exports = { doAuthentication }
