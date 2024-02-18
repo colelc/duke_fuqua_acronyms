@@ -102,45 +102,23 @@ export class EditAcronymComponent {
   }
 
   onClick = () => {
-    //const existingTags = this.tags.map(tag => tag.tag);
-
-    //this.acronym.tags = [];
-
-    const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString/*, existingTags*/);
+    const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString);
     this.acronym.tagString = tagObject["tagString"];
-    //this.acronym.tags = tagObject["tags"];
-    
-    const toArray = this.acronym.tagString.split(",").map((m) => m.trim());
-    for (let item of toArray) {
-      //if (!existingTags.includes(item)) {
-      //this.acronym.tags.push(item);
-      //}
-    }
-
-    console.log("acronym tagStrings", this.acronym.tagString);
-   // console.log("acronym tags", this.acronym.tags);
 
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
         console.log("data", data);
-        if (data["rows"].length === 1) {
-          // show success message
-          this.status = "Acronym " + data["rows"][0]["acronym"] + " has been edited and saved ";
-
-          // refresh tag list
-         // this.getTags();
+        if (data["rows"] === undefined) {
+          this.disableElements("You do not appear to have admin privilege required to edit acronyms", "input-box-status-bad");
         } else {
-          this.status = "Uh oh, something is not right.  Contact your friendly SDS support person";
+          // re-disable the submit button
+          this.disableElements(this.acronym.acronym + " has been edited AND saved", "input-box-status-good");
         }
       });
-      console.log("SUCCESS");
 
     // re-init
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
-   //this.getTags();
 
-    // re-disable the submit button
-    this.disableElements(this.acronym.acronym + " has been edited", "input-box-status-good");
   }
 
 

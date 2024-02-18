@@ -47,24 +47,6 @@ export class HttpService {
       );
     }
 
-    // GET ACRONYM_TAGS
-    // getAcronymTags(): Observable<Tag[]> {
-    //   return this.http.get<Tag[]>(this.API_BASE + "/api/acronym_tags")
-    //     .pipe(
-    //       //tap(_ => console.log("fetched acronyms")),
-    //       catchError(this.handleError<Tag[]>("getAcronymTags", [])),
-    //     );
-    // }
-
-    // GET ACRONYM_TAG_MAP
-    // getAcronymTagMapById(id:number): Observable<TagMap[]> {
-    //   return this.http.get<TagMap[]>(this.API_BASE + "/api/acronym_tag_map/" + String(id))
-    //     .pipe(
-    //       //tap(_ => console.log("fetched acronyms")),
-    //       catchError(this.handleError<TagMap[]>("getAcronymTagMap", [])),
-    //     );
-    // }
-
     // POST
     addAcronym = (acronym: Acronym):Observable<Acronym> => {
         return this.http.post<Acronym>(this.API_BASE + "/api/new_acronym", acronym)
@@ -72,16 +54,6 @@ export class HttpService {
             catchError(this.handleError<Acronym>("new Acronym", acronym))
           );
     }
-
-    // PUT
-    // editAcronym = (acronym: Acronym):Observable<Acronym> => {
-    //   console.log("HttpService.editAcronym", acronym);
-
-    //   return this.http.put<Acronym>(this.API_BASE + "/api/edit_acronym", acronym, {/*withCredentials:true*/})
-    //     .pipe(
-    //       catchError(this.handleError<Acronym>("edit Acronym", acronym))
-    //     );
-    // }
 
     // DELETE
     deleteAcronym = (id:string):Observable<number> => {

@@ -9,10 +9,7 @@ const app = express();
 
 // middleware to intercept request
 app.use((request, response, next) => {
-    if (!request.url.includes("favicon")) {
-        fwAuth.getIdentity(request); // put the identity object into the request
-        //fwAuth.getIdentity2(request);
-    }
+    fwAuth.getIdentity(request); // put the identity object into the request object
     next();
 });
 

@@ -99,9 +99,6 @@ export class NewAcronymComponent implements OnInit {
   }
 
   onClick = () => {
-    //const existingTags = this.tags.map(tag => tag.tag);
-
-    //this.acronym.tags = [];
 
     const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString/*, existingTags*/);
     this.acronym.tagString = tagObject["tagString"];

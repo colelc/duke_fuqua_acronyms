@@ -25,6 +25,10 @@ const getIdentity = ((request) => {
         return;
     }
 
+    if (request.url.includes("favicon")) {
+        return;
+    }
+
     const jwt = extractJWT(request.rawHeaders);
     // console.log("-------------------------------------------------");
     // console.log("JWT", jwt);

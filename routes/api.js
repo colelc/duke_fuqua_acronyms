@@ -4,22 +4,13 @@ const router = express.Router();
 const db = require("../db/postgres");
 
 try {
-   // router.get("/user/:id", async (request, response) => {
     router.get("/user", async (request, response) => {
-        //console.log(request.identity);
         if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
             response.status(401).json({error: "No identity for this person"});           
         } else {
             try {
-                const id = request.identity.dukeid;
-
-                const queryConfig = {
-                    text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1 AND active IS TRUE ",
-                    values: [id]
-                };
-
                 const pgClient = await db.pool.connect();
-                const result = await pgClient.query(queryConfig);
+                const result = await pgClient.query(getUserQueryConfig(request.identity.dukeid));
                 pgClient.release();
                 //console.log("result! /user/" + id, result.rows);
                 response.status(200).json(result.rows);
@@ -78,45 +69,53 @@ try {
 // POST NEW ACRONYM
 try {
     router.post("/new_acronym", async (request, response) => {
-        //console.log("request.body", request.body);
 
-        const data = request.body;
-        //console.log("data", data);
+        if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
+            response.status(401).json({error: "No identity for this person"});           
+        } else {
+            const data = request.body;
 
-        // remove any trailing commas from the tag string
-        const tagString = data["tagString"].replace(/,*$/, "");
-        const values1 = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], tagString, true, "postgres" ];
-        const sqlInsert = `INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
-                    VALUES($1,$2,$3,$4,$5,$6,$7)   RETURNING * `;
-        console.log(`INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
-             VALUES(${data["acronym"]},${data["refersTo"]},${data["definition"]},${data["areaKey"]},${tagString}, true, postgres)   
-             RETURNING * `);
 
-        const pgClient = await db.pool.connect();
+            const pgClient = await db.pool.connect();
 
-        try {
-            await pgClient.query("BEGIN");
+            try {
+                await pgClient.query("BEGIN");
 
-            if (data["id"] !== null) {
-                const sqlUpdate = "UPDATE fuqua_acronyms SET active = false WHERE id = ($1) RETURNING id";
-                const result1 = await pgClient.query(sqlUpdate, [data["id"]]);
-                console.log(`UPDATE fuqua_acronyms SET active = false WHERE id = ${data["id"]} RETURNING id`);
+                const result = await pgClient.query(getUserQueryConfig(request.identity.dukeid));
+                console.log("RESULT", result.rows); // if admin, array length 1; if not admin, empty
+
+                if (result.rows === undefined  ||  result.rows === null  ||  result.rows.length === 0) {
+                    response.status(401).json({error: "No admin privilege", identity: request.identity});        
+                } else {
+                    if (data["id"] !== null) {
+                        const sqlUpdate = "UPDATE fuqua_acronyms SET active = false WHERE id = ($1) RETURNING id";
+                        const updateResult = await pgClient.query(sqlUpdate, [data["id"]]);
+                        console.log(`UPDATE fuqua_acronyms SET active = false WHERE id = ${data["id"]} RETURNING id`);
+                    }
+
+                    const tagString = data["tagString"].replace(/,*$/, ""); // remove any trailing commas from the tag string
+                    const values = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], tagString, true, "postgres" ];
+                    const sqlInsert = `INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
+                                         VALUES($1,$2,$3,$4,$5,$6,$7)   RETURNING * `;
+                    console.log(`INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
+                                    VALUES(${data["acronym"]},${data["refersTo"]},${data["definition"]},${data["areaKey"]},${tagString}, true, postgres)   
+                                    RETURNING * `);
+
+                    const result1 = await pgClient.query(sqlInsert, values);
+                    const acronymId = result1["rows"][0].id;
+                    console.log("new acronymId", acronymId);
+
+                    await pgClient.query("COMMIT");
+                    response.json(result1);
+                }
+            } catch(e) {
+                console.log("Postgres ", e);
+                await pgClient.query("ROLLBACK");
+                response.json({"error": e});
+            } finally {
+                pgClient.release();
             }
-
-            const result1 = await pgClient.query(sqlInsert, values1);
-            const acronymId = result1["rows"][0].id;
-            console.log("new acronymId", acronymId);
-
-            await pgClient.query("COMMIT");
-            response.json(result1);
-        } catch(e) {
-            console.log("Postgres ", e);
-            await pgClient.query("ROLLBACK");
-            response.json({"error": e});
-        } finally {
-            pgClient.release();
         }
-
      });
 } catch(err) {
     return result.send("There was an error", err);
@@ -152,5 +151,14 @@ try {
 } catch(err) {
     return result.send("There was an error", err);
 } 
+
+getUserQueryConfig = (id) => {
+    const queryConfig = {
+        text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1 AND active IS TRUE ",
+        values: [id]
+    };
+    console.log(`SELECT * FROM fuqua_acronym_permissions WHERE duke_id = ${id} AND active IS TRUE`);
+    return queryConfig;
+}
 
 module.exports = router;
