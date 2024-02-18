@@ -3,10 +3,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/postgres");
 const { getAuthedClaims } = require("simple-jwt-auth");
+const logger = require("../logging/logger");
+
 //const { getAuthedClaims } = require("simple-jwt-auth");
 
 // const getIdentity2 = ((request) => {
-//     console.log(`getIdentity2 middleware doAuthentication: ${request.method} ${request.url}`);
+//     logger.logIt(__filename, `getIdentity2 middleware doAuthentication: ${request.method} ${request.url}`);
 
 //     const claims = getAuthedClaims({
 //         tokens: extractJWT(request.rawHeaders),
@@ -14,12 +16,12 @@ const { getAuthedClaims } = require("simple-jwt-auth");
 //         audience: ""
 //     });
 
-//     console.log("CLAIMS");
-//     console.log(claims);
+//     logger.logIt(__filename, "CLAIMS");
+//     logger.logIt(__filename, claims);
 // });
 
 const getIdentity = ((request) => {
-    //console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
+    //logger.logIt(__filename, `middleware doAuthentication: ${request.method} ${request.url}`);
 
     if (request.method === "OPTIONS") {
         return;
@@ -30,9 +32,9 @@ const getIdentity = ((request) => {
     }
 
     const jwt = extractJWT(request.rawHeaders);
-    // console.log("-------------------------------------------------");
-    // console.log("JWT", jwt);
-    // console.log("-------------------------------------------------");
+    // logger.logIt(__filename, "-------------------------------------------------");
+    // logger.logIt(__filename, "JWT", jwt);
+    // logger.logIt(__filename, "-------------------------------------------------");
 
     if (jwt === null) {
         return;
@@ -46,17 +48,17 @@ const getIdentity = ((request) => {
     // Extract dukeId - put it in the request
     //request.dukeId = identity.dukeid;
     request.identity = identity;
-    console.log(`${request.method} ${request.url}  dukeid=${request.identity.dukeid}`);
-    //console.log("request.identity", request.identity);
+    logger.logIt(__filename, `${request.method} ${request.url}  dukeid=${request.identity.dukeid}`);
+    //logger.logIt(__filename, "request.identity", request.identity);
    // return identity;
 });
 
 const extractJWT = ((rawHeaders) => {
-   // console.log("extractJWT", rawHeaders);
+   // logger.logIt(__filename, "extractJWT", rawHeaders);
 
     let extracted = rawHeaders.filter((token) => {  return token.includes("_FSB_G");  });
     if (extracted.length !== 1) {
-        console.log("Uh oh, We do not have the FSB anywhere in the raw headers");
+        logger.logIt(__filename, "Uh oh, We do not have the FSB anywhere in the raw headers");
         return null;
     } 
 
@@ -65,12 +67,12 @@ const extractJWT = ((rawHeaders) => {
     });
 
     if (fsbArray.length !== 1) {
-        console.log("Uh oh, no FSB string can be parsed");
+        logger.logIt(__filename, "Uh oh, no FSB string can be parsed");
         return null;
     }
     
     const fsb = fsbArray[0].trim().replace("_FSB_G=", "");
-   // console.log("fsb", fsb);
+   // logger.logIt(__filename, "fsb", fsb);
     return fsb;
 });
 
@@ -85,8 +87,8 @@ const getClaims = ((jwt) => {
         const claimsString = (Buffer.from(pieces[1], "base64")).toString("utf8");
         return JSON.parse(claimsString);
     } catch(err) {
-        console.log("Something has gone wrong on the nodejs back end. Cannot authenticate user.");
-        console.log(err);
+        logger.logIt(__filename, "Something has gone wrong on the nodejs back end. Cannot authenticate user.");
+        logger.logIt(__filename, err);
         return null;
     }
 });

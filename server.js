@@ -4,6 +4,7 @@ const bodyParser = require("body-parser")
 const https = require("node:https");
 const fs = require("fs");
 const fwAuth = require("./services/authentication_service")
+const logger = require("./logging/logger");
 
 const app = express();
 
@@ -39,12 +40,12 @@ const apiRoutes = require("./routes/api");
 app.use("/api", apiRoutes);
 
 app.get("/", (request, response) => {
-    console.log(`${request.method} ${request.url}`);
+    logger.logIt(__filename, `${request.method} ${request.url}`);
     response.send("<h4>Acronyms Node.js backend HTTPS</h4>");
 });
 
 app.get("/test", (request, response) => {
-    console.log(`${request.method} ${request.url}`);
+    logger.logIt(__filename, `${request.method} ${request.url}`);
     response.send("<h4>TESTING Acronyms Node.js backend</h4>");
 });
 
@@ -57,6 +58,6 @@ const options = {
 const server = https.createServer(options, app);
 
 server.listen(config.data.httpsApiPort, () => {
-    console.log(`Listening on ${config.data.httpsBaseUrl}:${config.data.httpsApiPort}`);
+    logger.logIt(__filename, `Listening on ${config.data.httpsBaseUrl}:${config.data.httpsApiPort}`);
 });
 
