@@ -6,28 +6,31 @@ const db = require("../db/postgres");
 try {
    // router.get("/user/:id", async (request, response) => {
     router.get("/user", async (request, response) => {
-        console.log(request.identity);
+        //console.log(request.identity);
         if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
-            console.log("request.identity is undefined");
             response.status(401).json({error: "No identity for this person"});           
         } else {
-            const id = request.identity.dukeid;
+            try {
+                const id = request.identity.dukeid;
 
-            const queryConfig = {
-                text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1",
-                values: [id]
-            };
+                const queryConfig = {
+                    text: "SELECT * FROM fuqua_acronym_permissions WHERE duke_id = $1 AND active IS TRUE ",
+                    values: [id]
+                };
 
-            const pgClient = await db.pool.connect();
-            const result = await pgClient.query(queryConfig);
-            pgClient.release();
-            console.log("result! /user/" + id, result.rows);
-            //response.send(result.rows);
-            response.status(200).json(result.rows);
+                const pgClient = await db.pool.connect();
+                const result = await pgClient.query(queryConfig);
+                pgClient.release();
+                //console.log("result! /user/" + id, result.rows);
+                response.status(200).json(result.rows);
+            } catch(_err) {
+                console.log("psql error:", _err);
+                response.status(500).json({err: _err, errorMsg: "Internal database error on the nodejs side"});
+            }
         }
     });   
 } catch(err) {
-    return result.send("There was an error");
+   response.status(500).json({err: err, error: "Internal error on the nodejs side"});
 }
 
 
@@ -54,49 +57,45 @@ try {
 }
 
 // Define route for get a tag map for a specific acronym
-try {
-    router.get("/acronym_tag_map/:id", async (request, response) => {
-        const id = request.params.id;
+// try {
+//     router.get("/acronym_tag_map/:id", async (request, response) => {
+//         const id = request.params.id;
 
-        const queryConfig = {
-            text: "SELECT * FROM fuqua_acronym_tag_map WHERE acronym_id = $1",
-            values: [id]
-        };
+//         const queryConfig = {
+//             text: "SELECT * FROM fuqua_acronym_tag_map WHERE acronym_id = $1",
+//             values: [id]
+//         };
 
-        const pgClient = await db.pool.connect();
-        const result = await pgClient.query(queryConfig);
-        pgClient.release();
-        console.log("result! /api/acronym_tag_map/:id", result.rows[0]);
-        //response.send(result.rows);
-        response.status(200).json(result.rows);
-    });   
-} catch(err) {
-    return result.send("There was an error");
-}
+//         const pgClient = await db.pool.connect();
+//         const result = await pgClient.query(queryConfig);
+//         pgClient.release();
+//         console.log("result! /api/acronym_tag_map/:id", result.rows[0]);
+//         //response.send(result.rows);
+//         response.status(200).json(result.rows);
+//     });   
+// } catch(err) {
+//     return result.send("There was an error");
+// }
 
 try {
     router.get("/acronyms", async (request, response, next) => {
-        //console.log("request.rawHeaders");
        // console.log(request.rawHeaders);
-        const pgClient = await db.pool.connect();
+       try {
+            const pgClient = await db.pool.connect();
 
-        // let sql = "SELECT t.name, a.* FROM fuqua_acronyms a, fuqua_acronym_tags t ";
-        // sql += " LEFT JOIN fuqua_acronym_tag_map m on m.tag_id = t.id ";
-        // sql += " WHERE m.acronym_id = a.id ";
-        // sql += " ORDER BY a.id, t.name";
-        // const result = await pgClient.query(sql);
-
-        const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
-        pgClient.release();
-        response.json(result.rows);
-       // console.log("result");
-       // console.log(result.rows[0]);
+            const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
+            pgClient.release();
+            response.json(result.rows);
+       } catch(_err) {
+            console.log("psql error:", _err);
+            response.status(500).json({err: _err, errorMsg: "Internal database error on the nodejs side"});      
+        }
     });
 } catch(err) {
-    return result.send("There was an error", err);
+    response.status(500).json({err: err, error: "Internal error on the nodejs side"});
 }
 
-// http://localhost:3050/api/acronym_tags
+http://localhost:3050/api/acronym_tags
 try {
     router.get("/acronym_tags", async (request, response, next) => {
         const pgClient = await db.pool.connect();
@@ -110,17 +109,17 @@ try {
 }
 
 // http://localhost:3050/api/acronym_tag_map
-try {
-    router.get("/acronym_tag_map", async (request, response, next) => {
-        const pgClient = await db.pool.connect();
+// try {
+//     router.get("/acronym_tag_map", async (request, response, next) => {
+//         const pgClient = await db.pool.connect();
 
-        const result = await pgClient.query("SELECT * FROM fuqua_acronym_tag_map");
-        pgClient.release();
-        response.json(result.rows);
-    });
-} catch(err) {
-    return result.send("There was an error", err);
-}
+//         const result = await pgClient.query("SELECT * FROM fuqua_acronym_tag_map");
+//         pgClient.release();
+//         response.json(result.rows);
+//     });
+// } catch(err) {
+//     return result.send("There was an error", err);
+// }
 
 // POST NEW ACRONYM
 try {
