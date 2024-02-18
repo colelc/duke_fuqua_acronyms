@@ -1,9 +1,10 @@
 const dotenv = require("dotenv");
+const logger = require("../logging/logger");
 
 dotenv.config();
 
 const ENV = (process.env.ENV).toLowerCase().trim();
-console.log("ENV is " + ENV);
+logger.logIt(__filename, "ENV is " + ENV);
 
 const data = {
     //keyFile: ENV === "d" ? process.env.D_KEY_FILE : process.env.P_KEY_FILE,

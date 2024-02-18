@@ -9,7 +9,6 @@ const logFormat = printf(({ level, message,  filePath, timestamp }) => {
   
 const logger = createLogger({
     format: combine(
-                   // label({ label: "right meow!" }),
                     timestamp(),
                     logFormat
                     ),
@@ -19,13 +18,11 @@ const logger = createLogger({
             ]
   });
 
-// logger.add(new winston.transports.Console({
-//     format: `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//}));
 
-const logIt = (filePath, message) => {
-    logger.log({level: "info", filePath: filePath, message: message});
+const logIt = (filePath,  message, level="info") => {
+    console.log("level", level);
+    logger.log({level: level, filePath: filePath, message: message});
 };
 
 
-module.exports = { logger, logIt };
+module.exports = { /*logger,*/ logIt };
