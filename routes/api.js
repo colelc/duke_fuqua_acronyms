@@ -34,7 +34,7 @@ try {
 }
 
 
-// Define route for get a specific acronym by id
+// GET ACRONYM BY ID
 try {
     router.get("/acronym/:id", async (request, response) => {
         const id = request.params.id;
@@ -56,27 +56,7 @@ try {
     return result.send("There was an error");
 }
 
-// Define route for get a tag map for a specific acronym
-// try {
-//     router.get("/acronym_tag_map/:id", async (request, response) => {
-//         const id = request.params.id;
-
-//         const queryConfig = {
-//             text: "SELECT * FROM fuqua_acronym_tag_map WHERE acronym_id = $1",
-//             values: [id]
-//         };
-
-//         const pgClient = await db.pool.connect();
-//         const result = await pgClient.query(queryConfig);
-//         pgClient.release();
-//         console.log("result! /api/acronym_tag_map/:id", result.rows[0]);
-//         //response.send(result.rows);
-//         response.status(200).json(result.rows);
-//     });   
-// } catch(err) {
-//     return result.send("There was an error");
-// }
-
+// GET ALL ACRONYMS
 try {
     router.get("/acronyms", async (request, response, next) => {
        // console.log(request.rawHeaders);
@@ -95,32 +75,6 @@ try {
     response.status(500).json({err: err, error: "Internal error on the nodejs side"});
 }
 
-http://localhost:3050/api/acronym_tags
-// try {
-//     router.get("/acronym_tags", async (request, response, next) => {
-//         const pgClient = await db.pool.connect();
-
-//         const result = await pgClient.query("SELECT * FROM fuqua_acronym_tags WHERE active IS TRUE");
-//         pgClient.release();
-//         response.json(result.rows);
-//     });
-// } catch(err) {
-//     return result.send("There was an error", err);
-// }
-
-// http://localhost:3050/api/acronym_tag_map
-// try {
-//     router.get("/acronym_tag_map", async (request, response, next) => {
-//         const pgClient = await db.pool.connect();
-
-//         const result = await pgClient.query("SELECT * FROM fuqua_acronym_tag_map");
-//         pgClient.release();
-//         response.json(result.rows);
-//     });
-// } catch(err) {
-//     return result.send("There was an error", err);
-// }
-
 // POST NEW ACRONYM
 try {
     router.post("/new_acronym", async (request, response) => {
@@ -132,11 +86,11 @@ try {
         // remove any trailing commas from the tag string
         const tagString = data["tagString"].replace(/,*$/, "");
         const values1 = [data["acronym"], data["refersTo"], data["definition"], data["areaKey"], tagString, true, "postgres" ];
-        const sql1 = `INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
+        const sqlInsert = `INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
                     VALUES($1,$2,$3,$4,$5,$6,$7)   RETURNING * `;
         console.log(`INSERT INTO fuqua_acronyms(acronym, refers_to, definition, area_key, tag_string, active, created_by) 
-             VALUES(${data["acronym"]},${data["refersTo"]},${data["definition"]},
-                        ${data["areaKey"]},${tagString}, true, postgres)   RETURNING * `);
+             VALUES(${data["acronym"]},${data["refersTo"]},${data["definition"]},${data["areaKey"]},${tagString}, true, postgres)   
+             RETURNING * `);
 
         const pgClient = await db.pool.connect();
 
@@ -144,46 +98,14 @@ try {
             await pgClient.query("BEGIN");
 
             if (data["id"] !== null) {
-                // const sql0 = "DELETE FROM fuqua_acronym_tag_map WHERE acronym_id = ($1)";
-                // console.log(sql0);
-                // console.log(data["id"]);
-                // const result0 = await pgClient.query(sql0, [data["id"]]);
-                // console.log("result0", result0);
-
-                const sql1 = "UPDATE fuqua_acronyms SET active = false WHERE id = ($1) RETURNING id";
-                const result1 = await pgClient.query(sql1, [data["id"]]);
+                const sqlUpdate = "UPDATE fuqua_acronyms SET active = false WHERE id = ($1) RETURNING id";
+                const result1 = await pgClient.query(sqlUpdate, [data["id"]]);
                 console.log(`UPDATE fuqua_acronyms SET active = false WHERE id = ${data["id"]} RETURNING id`);
-                //console.log("result1", result1);
             }
 
-            //console.log(sql1);
-            //console.log(values1.join(", "));
-            const result1 = await pgClient.query(sql1, values1);
-            //console.log(result1["rows"][0]);
+            const result1 = await pgClient.query(sqlInsert, values1);
             const acronymId = result1["rows"][0].id;
             console.log("new acronymId", acronymId);
-
-            // if we have new tags, need to insert them into fuqua_acronym_tags
-            // console.log("data[tags", data["tags"]);
-            // if (data["tags"].length > 0) {  
-            //     const sql2 = `INSERT INTO fuqua_acronym_tags (name, created_by) VALUES($1, $2) RETURNING *`;
-            //     console.log(sql2);
-            //     for (let newTag of data["tags"]) {
-            //         console.log(newTag);
-            //         const result2 = await pgClient.query(sql2, [newTag, "postgres"]);
-            //         console.log(result2["rows"][0]);
-            //         const tagId = result2["rows"][0]["id"];
-            //         console.log("tagId", tagId);
-
-            //         const sql3 = `INSERT INTO fuqua_acronym_tag_map (acronym_id, tag_id, created_by)
-            //                         VALUES($1, $2, $3) RETURNING *`;
-            //         const values = [acronymId, tagId, "postgres"];
-            //         console.log(sql3);
-            //         console.log(values);
-            //         const result3 = await pgClient.query(sql3, values);
-            //         console.log(result3["rows"][0].id);
-            //     }
-            // } // if have tags to add
 
             await pgClient.query("COMMIT");
             response.json(result1);
@@ -212,16 +134,9 @@ try {
         try {
             await pgClient.query("BEGIN");
 
-            // let sql = "DELETE FROM fuqua_acronym_tag_map WHERE acronym_id = $1 ";
-            // console.log(sql);
-            // const result0 = await pgClient.query(sql, [id]);
-            // console.log("result0", result0);
-
             const sql = "DELETE FROM fuqua_acronyms WHERE id = $1 RETURNING *";
             console.log(`DELETE FROM fuqua_acronyms WHERE id = ${id} RETURNING *`);
-            //console.log(id);
             const result1 = await pgClient.query(sql, [id]);
-            //console.log("result1", result1);
 
             await pgClient.query("COMMIT");
             response.json(result1);
@@ -237,75 +152,5 @@ try {
 } catch(err) {
     return result.send("There was an error", err);
 } 
-
-// EDIT ACRONYM
-// try {
-//     router.put("/edit_acronym", async (request, response) => {
-//         //console.log("request.body", request.body);
-
-//         const data = request.body;
-
-//         // remove any trailing commas from the tag string
-//         const tagString = data["tagString"].replace(/,*$/, "");
-//         const values1 = [data["id"], data["acronym"], data["refersTo"], data["definition"], data["areaKey"], tagString, "postgres" ];
-//         const sql1 = `UPDATE fuqua_acronyms 
-//                         SET acronym = ($2), 
-//                         refers_to = ($3), 
-//                         definition = ($4), 
-//                         area_key = ($5), 
-//                         tag_string = ($6), 
-//                         last_updated_by = ($7),
-//                         last_updated = NOW() 
-//                       WHERE id = ($1)
-//                       RETURNING * `;
-        
-//         const pgClient = await db.pool.connect();
-
-//         try {
-//             await pgClient.query("BEGIN");
-
-//             console.log(sql1);
-//             console.log(values1.join(", "));
-//             const result1 = await pgClient.query(sql1, values1);
-//             console.log(result1["rows"][0]);
-//             const acronymId = result1["rows"][0].id;
-//             console.log("acronymId", acronymId);
-
-//             // if we have new tags, need to insert them into fuqua_acronym_tags
-//             // console.log("data[tags", data["tags"]);
-//             // if (data["tags"].length > 0) {  
-//             //     const sql2 = `INSERT INTO fuqua_acronym_tags (name, created_by) VALUES($1, $2) RETURNING *`;
-//             //     console.log(sql2);
-//             //     for (let newTag of data["tags"]) {
-//             //         console.log(newTag);
-//             //         const result2 = await pgClient.query(sql2, [newTag, "postgres"]);
-//             //         console.log(result2["rows"][0]);
-//             //         const tagId = result2["rows"][0]["id"];
-//             //         console.log("tagId", tagId);
-
-//             //         const sql3 = `INSERT INTO fuqua_acronym_tag_map (acronym_id, tag_id, created_by)
-//             //                         VALUES($1, $2, $3) RETURNING *`;
-//             //         const values = [acronymId, tagId, "postgres"];
-//             //         console.log(sql3);
-//             //         console.log(values);
-//             //         const result3 = await pgClient.query(sql3, values);
-//             //         console.log(result3["rows"][0].id);
-//             //     }
-//             // } // if have tags to add
-
-//             await pgClient.query("COMMIT");
-//             response.json(result1);
-//         } catch(e) {
-//             console.log("Postgres ", e);
-//             await pgClient.query("ROLLBACK");
-//             response.json({"error": e});
-//         } finally {
-//             pgClient.release();
-//         }
-
-//      });
-// } catch(err) {
-//     return result.send("There was an error", err);
-// } 
 
 module.exports = router;
