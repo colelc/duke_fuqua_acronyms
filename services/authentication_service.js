@@ -21,6 +21,10 @@ const getIdentity2 = ((request) => {
 const getIdentity = ((request) => {
     console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
 
+    if (request.url === "OPTIONS") {
+        return;
+    }
+
     const jwt = extractJWT(request.rawHeaders);
     // console.log("-------------------------------------------------");
     // console.log("JWT", jwt);
@@ -38,7 +42,7 @@ const getIdentity = ((request) => {
     // Extract dukeId - put it in the request
     //request.dukeId = identity.dukeid;
     request.identity = identity;
-    console.log("request.identity", request.identity);
+    console.log("request.identity.dukeid", request.identity.dukeid);
     //console.log("request.identity", request.identity);
    // return identity;
 });

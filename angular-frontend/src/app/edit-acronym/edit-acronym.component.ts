@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Acronym } from '../interface/acronym-if';
-import { Tag } from '../interface/tag-if';
+//import { Tag } from '../interface/tag-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -20,7 +20,7 @@ export class EditAcronymComponent {
   messageStatusClass : string = "";
   submitButtonClass: string = "";
 
-  tags: Tag[] = [];
+  //tags: Tag[] = [];
 
   constructor(private acronymsService: AcronymsService, 
             private activatedRoute: ActivatedRoute,
@@ -35,28 +35,28 @@ export class EditAcronymComponent {
     });
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
 
-    this.getTags();
+   // this.getTags();
   }
 
-  getTags = ():void => {
+ // getTags = ():void => {
     // ok, not the best way to do this, but going with it for now
-    this.httpService.getAcronymTags() 
-    .subscribe(data => {
-      for (let d of data) {
-        d.tag = d["name"];
-        d.createdBy = d["created_by"];
-        d.lastUpdatedBy = d["last_updated_by"];
-        d.lastUpdated = d["last_updated"];
-        delete d["name"];
-        delete d["created_by"];
-        delete d["last_updated_by"];
-        delete d["last_updated"];
-      }
+    // this.httpService.getAcronymTags() 
+    // .subscribe(data => {
+    //   for (let d of data) {
+    //     d.tag = d["name"];
+    //     d.createdBy = d["created_by"];
+    //     d.lastUpdatedBy = d["last_updated_by"];
+    //     d.lastUpdated = d["last_updated"];
+    //     delete d["name"];
+    //     delete d["created_by"];
+    //     delete d["last_updated_by"];
+    //     delete d["last_updated"];
+    //   }
 
-      this.tags = [...data];
-      console.log("tags", this.tags);
-    });
-  }
+    //   this.tags = [...data];
+    //   console.log("tags", this.tags);
+    //});
+  //}
 
   private disableElements = (statusMessage:string, messageStatusClass:string) => {
     this.status = statusMessage;
@@ -102,23 +102,23 @@ export class EditAcronymComponent {
   }
 
   onClick = () => {
-    const existingTags = this.tags.map(tag => tag.tag);
+    //const existingTags = this.tags.map(tag => tag.tag);
 
-    this.acronym.tags = [];
+    //this.acronym.tags = [];
 
-    const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString, existingTags);
+    const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString/*, existingTags*/);
     this.acronym.tagString = tagObject["tagString"];
-    this.acronym.tags = tagObject["tags"];
+    //this.acronym.tags = tagObject["tags"];
     
     const toArray = this.acronym.tagString.split(",").map((m) => m.trim());
     for (let item of toArray) {
-      if (!existingTags.includes(item)) {
-        this.acronym.tags.push(item);
-      }
+      //if (!existingTags.includes(item)) {
+      //this.acronym.tags.push(item);
+      //}
     }
 
     console.log("acronym tagStrings", this.acronym.tagString);
-    console.log("acronym tags", this.acronym.tags);
+   // console.log("acronym tags", this.acronym.tags);
 
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
@@ -128,7 +128,7 @@ export class EditAcronymComponent {
           this.status = "Acronym " + data["rows"][0]["acronym"] + " has been edited and saved ";
 
           // refresh tag list
-          this.getTags();
+         // this.getTags();
         } else {
           this.status = "Uh oh, something is not right.  Contact your friendly SDS support person";
         }
@@ -137,7 +137,7 @@ export class EditAcronymComponent {
 
     // re-init
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
-    this.getTags();
+   //this.getTags();
 
     // re-disable the submit button
     this.disableElements(this.acronym.acronym + " has been edited", "input-box-status-good");

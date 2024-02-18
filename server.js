@@ -16,6 +16,11 @@ app.use((request, response, next) => {
     next();
 });
 
+// middleware to protect POST and DELETE endpoints
+// app.post("*", (request, response, next) => {
+//     console.log("POST MIDDLEWARE");
+// } );
+
 // handle CORS
 const allowedOrigin = config.data.httpsBaseUrl + ":" + config.data.originPort;
 

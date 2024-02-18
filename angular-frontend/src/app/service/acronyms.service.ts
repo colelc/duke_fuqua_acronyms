@@ -47,12 +47,12 @@ export class AcronymsService {
     }
   }
 
-  trimDedupeCandidateTags = (tagString:string, existingTags:string[]):{tagString:string; tags:string[]} => {
+  trimDedupeCandidateTags = (tagString:string/*, existingTags:string[]*/):{tagString:string; tags:string[]} => {
     let candidateTags = tagString.split(",").map((m) => m.trim());
     candidateTags = candidateTags.filter((item, index) => candidateTags.indexOf(item) === index);
     const cleanedTagString = candidateTags.join(", "); // deduped tag string
 
-    const tags = candidateTags.filter(f => !existingTags.includes(f));
+    const tags = candidateTags.filter(f => true /*!existingTags.includes(f)*/);
     //return cleanedTagString;
     return {
       tagString: cleanedTagString,

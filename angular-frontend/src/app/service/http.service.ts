@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, catchError, of } from "rxjs";
 import { Acronym } from "../interface/acronym-if";
-import { Tag } from "../interface/tag-if";
-import { TagMap } from "../interface/tag-map-if";
+//import { Tag } from "../interface/tag-if";
+//import { TagMap } from "../interface/tag-map-if";
 import { User } from "../interface/user-if";
 import { ConfigService } from "./config.service";
 
@@ -48,22 +48,22 @@ export class HttpService {
     }
 
     // GET ACRONYM_TAGS
-    getAcronymTags(): Observable<Tag[]> {
-      return this.http.get<Tag[]>(this.API_BASE + "/api/acronym_tags")
-        .pipe(
-          //tap(_ => console.log("fetched acronyms")),
-          catchError(this.handleError<Tag[]>("getAcronymTags", [])),
-        );
-    }
+    // getAcronymTags(): Observable<Tag[]> {
+    //   return this.http.get<Tag[]>(this.API_BASE + "/api/acronym_tags")
+    //     .pipe(
+    //       //tap(_ => console.log("fetched acronyms")),
+    //       catchError(this.handleError<Tag[]>("getAcronymTags", [])),
+    //     );
+    // }
 
     // GET ACRONYM_TAG_MAP
-    getAcronymTagMapById(id:number): Observable<TagMap[]> {
-      return this.http.get<TagMap[]>(this.API_BASE + "/api/acronym_tag_map/" + String(id))
-        .pipe(
-          //tap(_ => console.log("fetched acronyms")),
-          catchError(this.handleError<TagMap[]>("getAcronymTagMap", [])),
-        );
-    }
+    // getAcronymTagMapById(id:number): Observable<TagMap[]> {
+    //   return this.http.get<TagMap[]>(this.API_BASE + "/api/acronym_tag_map/" + String(id))
+    //     .pipe(
+    //       //tap(_ => console.log("fetched acronyms")),
+    //       catchError(this.handleError<TagMap[]>("getAcronymTagMap", [])),
+    //     );
+    // }
 
     // POST
     addAcronym = (acronym: Acronym):Observable<Acronym> => {

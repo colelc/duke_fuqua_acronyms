@@ -6,7 +6,7 @@ export interface Acronym {
     definition: string;
     areaKey: string;
     active: boolean;
-    tags:  string[];
+   // tags:  string[];
     tagString: string;
     createdBy: string;
     created: string;

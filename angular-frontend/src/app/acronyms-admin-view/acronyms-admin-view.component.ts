@@ -33,7 +33,7 @@ export class AcronymsAdminViewComponent implements OnInit {
       .subscribe(data => {
         for (let d of data) {
           d.tagString = d["tag_string"];
-          d.tags = [];
+         // d.tags = [];
           d.refersTo = d["refers_to"];
           d.areaKey = d["area_key"];
           d.lastUpdatedBy = d["last_updated_by"];

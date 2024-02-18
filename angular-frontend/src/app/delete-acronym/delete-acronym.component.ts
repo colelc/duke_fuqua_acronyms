@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Acronym } from '../interface/acronym-if';
-import { Tag } from '../interface/tag-if';
+//import { Tag } from '../interface/tag-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -22,7 +22,7 @@ export class DeleteAcronymComponent {
   messageStatusClass : string = "";
   submitButtonClass: string = "";
 
-  tags: Tag[] = [];
+  //tags: Tag[] = [];
 
   constructor(private acronymsService: AcronymsService, 
             private activatedRoute: ActivatedRoute,
