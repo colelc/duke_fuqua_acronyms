@@ -13,7 +13,10 @@ const logger = createLogger({
                     timestamp(),
                     logFormat
                     ),
-    transports: [new transports.Console()]
+    transports: [
+                new transports.Console(),
+                new transports.File({filename: "ACRONYMS.log", level: "info"})
+            ]
   });
 
 // logger.add(new winston.transports.Console({
