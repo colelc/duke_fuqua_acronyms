@@ -58,7 +58,7 @@ const extractJWT = ((rawHeaders) => {
 
     let extracted = rawHeaders.filter((token) => {  return token.includes("_FSB_G");  });
     if (extracted.length !== 1) {
-        logger.logIt(__filename, "Uh oh, We do not have the FSB anywhere in the raw headers");
+        logger.logIt(__filename, "Uh oh, We do not have the FSB anywhere in the raw headers", "error");
         return null;
     } 
 
@@ -67,7 +67,7 @@ const extractJWT = ((rawHeaders) => {
     });
 
     if (fsbArray.length !== 1) {
-        logger.logIt(__filename, "Uh oh, no FSB string can be parsed");
+        logger.logIt(__filename, "Uh oh, no FSB string can be parsed", "error");
         return null;
     }
     
@@ -87,8 +87,8 @@ const getClaims = ((jwt) => {
         const claimsString = (Buffer.from(pieces[1], "base64")).toString("utf8");
         return JSON.parse(claimsString);
     } catch(err) {
-        logger.logIt(__filename, "Something has gone wrong on the nodejs back end. Cannot authenticate user.");
-        logger.logIt(__filename, err);
+        logger.logIt(__filename, "Something has gone wrong on the nodejs back end. Cannot authenticate user.", "error");
+        logger.logIt(__filename, err, "error");
         return null;
     }
 });

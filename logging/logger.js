@@ -20,7 +20,6 @@ const logger = createLogger({
 
 
 const logIt = (filePath,  message, level="info") => {
-    console.log("level", level);
     logger.log({level: level, filePath: filePath, message: message});
 };
 
