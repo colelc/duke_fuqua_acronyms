@@ -47,21 +47,33 @@ export class AppComponent implements OnInit {
   home() {
     try {
       this.userService.getUser().subscribe(data => {
-        if (data.length > 0) {
-          console.log("ADMIN");
-          this.administrator = true;
-          this.router.navigateByUrl("/acronyms/admin");
+        if (data === null) {
+          console.log("Cannot identify user - we will default to non-admin status");
+          this.view(data);
         } else {
-          console.log("USER");
-          this.administrator = false;
-          this.router.navigateByUrl("/acronyms/view");
+          if (data.length > 0) {
+            this.admin(data);
+          } else {
+            this.view(data);
+          }
         }
       });
     } catch(err) {
       console.log("uh oh, a backend error - we will default to non-admin status");
-      this.administrator = false;
-      this.router.navigateByUrl("/acronyms/view");
+      this.view([]);
     }
+  }
+
+  admin = (data:Array<any>) => {
+    console.log("ADMIN", data);
+    this.administrator = true;
+    this.router.navigateByUrl("/acronyms/admin");
+  }
+
+  view = (data:Array<any>) => {
+    console.log("USER", data);
+    this.administrator = false;
+    this.router.navigateByUrl("/acronyms/view");
   }
 
   ngOnInit() {

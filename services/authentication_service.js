@@ -27,18 +27,18 @@ const getIdentity = ((request) => {
     // console.log("-------------------------------------------------");
 
     if (jwt === null) {
-        return null;
+        return;
     }
 
     const identity = getClaims(jwt);
     if (identity === null) {
-        return null;
+        return;
     }
 
     // Extract dukeId - put it in the request
-    request.dukeId = identity.dukeid;
+    //request.dukeId = identity.dukeid;
     request.identity = identity;
-    console.log("request.dukeId", request.dukeId);
+    console.log("request.identity", request.identity);
     //console.log("request.identity", request.identity);
    // return identity;
 });
