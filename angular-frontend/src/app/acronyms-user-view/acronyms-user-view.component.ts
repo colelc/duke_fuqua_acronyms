@@ -68,8 +68,4 @@ export class AcronymsUserViewComponent {
       return "acronym-data-cell acronym-data-cell-striping";
     }
   }
-
-
 }
-
-

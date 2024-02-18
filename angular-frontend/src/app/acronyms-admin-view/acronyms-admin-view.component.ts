@@ -93,6 +93,4 @@ export class AcronymsAdminViewComponent implements OnInit {
     });
 
   }
-
-
 }
