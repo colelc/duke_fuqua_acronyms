@@ -2,7 +2,21 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db/postgres");
+const { getAuthedClaims } = require("simple-jwt-auth");
+//const { getAuthedClaims } = require("simple-jwt-auth");
 
+const getIdentity2 = ((request) => {
+    console.log(`getIdentity2 middleware doAuthentication: ${request.method} ${request.url}`);
+
+    const claims = getAuthedClaims({
+        tokens: extractJWT(request.rawHeaders),
+        issuer: "go.fuqua.duke.edu",
+        audience: ""
+    });
+
+    console.log("CLAIMS");
+    console.log(claims);
+});
 
 const getIdentity = ((request) => {
     console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
@@ -69,4 +83,4 @@ const getClaims = ((jwt) => {
     }
 });
 
-module.exports = { getIdentity }
+module.exports = { getIdentity, getIdentity2 }
