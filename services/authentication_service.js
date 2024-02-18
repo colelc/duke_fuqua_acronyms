@@ -19,7 +19,7 @@ const { getAuthedClaims } = require("simple-jwt-auth");
 // });
 
 const getIdentity = ((request) => {
-    console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
+    //console.log(`middleware doAuthentication: ${request.method} ${request.url}`);
 
     if (request.method === "OPTIONS") {
         return;
@@ -46,7 +46,7 @@ const getIdentity = ((request) => {
     // Extract dukeId - put it in the request
     //request.dukeId = identity.dukeid;
     request.identity = identity;
-    console.log("request.identity.dukeid", request.identity.dukeid);
+    console.log(`${request.method} ${request.url}  dukeid=${request.identity.dukeid}`);
     //console.log("request.identity", request.identity);
    // return identity;
 });

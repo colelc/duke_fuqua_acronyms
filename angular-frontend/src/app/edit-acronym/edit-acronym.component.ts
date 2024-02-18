@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Acronym } from '../interface/acronym-if';
-//import { Tag } from '../interface/tag-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -20,8 +19,6 @@ export class EditAcronymComponent {
   messageStatusClass : string = "";
   submitButtonClass: string = "";
 
-  //tags: Tag[] = [];
-
   constructor(private acronymsService: AcronymsService, 
             private activatedRoute: ActivatedRoute,
             private httpService: HttpService) {
@@ -34,29 +31,7 @@ export class EditAcronymComponent {
       this.id = params.get("id");
     });
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
-
-   // this.getTags();
   }
-
- // getTags = ():void => {
-    // ok, not the best way to do this, but going with it for now
-    // this.httpService.getAcronymTags() 
-    // .subscribe(data => {
-    //   for (let d of data) {
-    //     d.tag = d["name"];
-    //     d.createdBy = d["created_by"];
-    //     d.lastUpdatedBy = d["last_updated_by"];
-    //     d.lastUpdated = d["last_updated"];
-    //     delete d["name"];
-    //     delete d["created_by"];
-    //     delete d["last_updated_by"];
-    //     delete d["last_updated"];
-    //   }
-
-    //   this.tags = [...data];
-    //   console.log("tags", this.tags);
-    //});
-  //}
 
   private disableElements = (statusMessage:string, messageStatusClass:string) => {
     this.status = statusMessage;
@@ -120,7 +95,5 @@ export class EditAcronymComponent {
     this.acronym = this.acronymsService.getAcronymById(Number(this.id));
 
   }
-
-
 
 }

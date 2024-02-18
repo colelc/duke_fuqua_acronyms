@@ -21,7 +21,7 @@ try {
         }
     });   
 } catch(err) {
-   response.status(500).json({err: err, error: "Internal error on the nodejs side"});
+   response.status(500).json({err: err, error: "/user Internal error on the nodejs side"});
 }
 
 
@@ -44,7 +44,7 @@ try {
         response.status(200).json(result.rows);
     });   
 } catch(err) {
-    return result.send("There was an error");
+    response.status(500).json({err: err, error: "/acronym:id Internal error on the nodejs side"});
 }
 
 // GET ALL ACRONYMS
@@ -56,14 +56,14 @@ try {
 
             const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
             pgClient.release();
-            response.json(result.rows);
+            response.status(200).json(result.rows);
        } catch(_err) {
             console.log("psql error:", _err);
             response.status(500).json({err: _err, errorMsg: "Internal database error on the nodejs side"});      
         }
     });
 } catch(err) {
-    response.status(500).json({err: err, error: "Internal error on the nodejs side"});
+    response.status(500).json({err: err, error: "/acronyms Internal error on the nodejs side"});
 }
 
 // POST NEW ACRONYM
@@ -82,7 +82,7 @@ try {
                 await pgClient.query("BEGIN");
 
                 const result = await pgClient.query(getUserQueryConfig(request.identity.dukeid));
-                console.log("RESULT", result.rows); // if admin, array length 1; if not admin, empty
+                //console.log("RESULT", result.rows); // if admin, array length 1; if not admin, empty
 
                 if (result.rows === undefined  ||  result.rows === null  ||  result.rows.length === 0) {
                     response.status(401).json({error: "No admin privilege", identity: request.identity});        
@@ -106,50 +106,57 @@ try {
                     console.log("new acronymId", acronymId);
 
                     await pgClient.query("COMMIT");
-                    response.json(result1);
+                    response.status(200).json(result1);
                 }
             } catch(e) {
                 console.log("Postgres ", e);
                 await pgClient.query("ROLLBACK");
-                response.json({"error": e});
+                response.status(500).json({"error": e});
             } finally {
                 pgClient.release();
             }
         }
      });
 } catch(err) {
-    return result.send("There was an error", err);
+    response.status(500).json({err: err, error: "/new_acronym, Internal error on the nodejs side"});
 } 
 
 // DELETE ACRONYM
 try {
     router.delete("/delete_acronym/:id", async (request, response) => {
+        if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
+            response.status(401).json({error: "No identity for this person"});           
+        } else {
+            const id = request.params.id;
 
-        const id = request.params.id;
-        //console.log(id);
+            const pgClient = await db.pool.connect();
 
-        const pgClient = await db.pool.connect();
+            try {
+                await pgClient.query("BEGIN");
 
-        try {
-            await pgClient.query("BEGIN");
+                const result = await pgClient.query(getUserQueryConfig(request.identity.dukeid));
 
-            const sql = "DELETE FROM fuqua_acronyms WHERE id = $1 RETURNING *";
-            console.log(`DELETE FROM fuqua_acronyms WHERE id = ${id} RETURNING *`);
-            const result1 = await pgClient.query(sql, [id]);
+                if (result.rows === undefined  ||  result.rows === null  ||  result.rows.length === 0) {
+                    response.status(401).json({error: "No admin privilege", identity: request.identity});        
+                } else {
+                    const sql = "DELETE FROM fuqua_acronyms WHERE id = $1 RETURNING *";
+                    console.log(`DELETE FROM fuqua_acronyms WHERE id = ${id} RETURNING *`);
+                    const result1 = await pgClient.query(sql, [id]);
 
-            await pgClient.query("COMMIT");
-            response.json(result1);
-        } catch(e) {
-            console.log("Postgres ", e);
-            await pgClient.query("ROLLBACK");
-            response.json({"error": e});
-        } finally {
-            pgClient.release();
+                    await pgClient.query("COMMIT");
+                    response.status(200).json(result1);
+                }
+            } catch(e) {
+                console.log("Postgres ", e);
+                await pgClient.query("ROLLBACK");
+                response.status(500).json({"error": e});
+            } finally {
+                pgClient.release();
+            }
         }
-       
     });
 } catch(err) {
-    return result.send("There was an error", err);
+    response.status(500).json({err: err, error: "/delete_acronym, Internal error on the nodejs side"});
 } 
 
 getUserQueryConfig = (id) => {

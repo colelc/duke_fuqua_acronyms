@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { Acronym } from '../interface/acronym-if';
-//import { Tag } from '../interface/tag-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -20,36 +19,12 @@ export class NewAcronymComponent implements OnInit {
   messageStatusClass : string = "";
   submitButtonClass: string = "";
 
-  //tags: Tag[] = [];
-
   constructor(private acronymsService: AcronymsService, private httpService: HttpService) {
     this.acronym = this.initAcronym();
     this.disableElements("", "input-box-status-good");
   }
 
-  ngOnInit(): void {
-    //this.getTags();
-  }
-
-  // getTags = ():void => {
-  //   // ok, not the best way to do this, but going with it for now
-  //   this.httpService.getAcronymTags() 
-  //   .subscribe(data => {
-  //     for (let d of data) {
-  //       d.tag = d["name"];
-  //       d.createdBy = d["created_by"];
-  //       d.lastUpdatedBy = d["last_updated_by"];
-  //       d.lastUpdated = d["last_updated"];
-  //       delete d["name"];
-  //       delete d["created_by"];
-  //       delete d["last_updated_by"];
-  //       delete d["last_updated"];
-  //     }
-
-  //     this.tags = [...data];
-  //     console.log("tags", this.tags);
-  //   });
-  // }
+  ngOnInit(): void {}
 
   private initAcronym = () => {
     return this.acronymsService.initAcronym();
@@ -99,31 +74,26 @@ export class NewAcronymComponent implements OnInit {
   }
 
   onClick = () => {
-
     const tagObject = this.acronymsService.trimDedupeCandidateTags(this.acronym.tagString/*, existingTags*/);
     this.acronym.tagString = tagObject["tagString"];
-    //this.acronym.tags = tagObject["tags"];
 
     this.httpService.addAcronym(this.acronym)
       .subscribe(data => {
         console.log("data", data);
-        if (data["rows"].length === 1) {
-          // show success message
-          this.status = "Acronym " + data["rows"][0]["acronym"] + " has been added ";
-
-          // refresh tag list
-          //this.getTags();
+        if (data["rows"] === undefined) {
+          this.disableElements("You do not appear to have admin privilege required to create new acronyms", "input-box-status-bad");
         } else {
-          this.status = "Uh oh, something is not right.  Contact your friendly SDS support person";
+          const newId = data["rows"][0]["id"];
+          const newAcronym = data["rows"][0]["acronym"];
+
+          // re-disable the submit button
+          this.disableElements(newAcronym + " has been added as a new acronym", "input-box-status-good");
         }
       });
-      console.log("SUCCESS");
 
     // clear out fields
     this.acronym = this.initAcronym();
 
-    // re-disable the submit button
-    this.disableElements(this.acronym.acronym + " has been added as a new acronym", "input-box-status-good");
   }
 
 }

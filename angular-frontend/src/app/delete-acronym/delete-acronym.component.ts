@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Acronym } from '../interface/acronym-if';
-//import { Tag } from '../interface/tag-if';
 import { AcronymsService } from '../service/acronyms.service';
 import { HttpService } from '../service/http.service';
 
@@ -21,8 +20,6 @@ export class DeleteAcronymComponent {
   status: string = "";
   messageStatusClass : string = "";
   submitButtonClass: string = "";
-
-  //tags: Tag[] = [];
 
   constructor(private acronymsService: AcronymsService, 
             private activatedRoute: ActivatedRoute,
@@ -52,16 +49,17 @@ export class DeleteAcronymComponent {
   }
 
   onClick = () => {
-    //console.log(this.id);
     this.httpService.deleteAcronym(this.id)
       .subscribe((data) => {
-        console.log("Delete successful", data);
-      });
-      console.log("SUCCESS");
+        console.log("data", data);
+        if (data === null  ||   data === undefined  ||  data["rows"] === undefined) {
+          this.disableElements("You do not appear to have admin privilege required to delete acronyms", "input-box-status-bad");
+        } else {
+          // re-disable the submit button
+          this.disableElements(this.acronym.acronym + " has been deleted", "input-box-status-good");
+        }
+       });
 
-
-    // re-disable the submit button
-    this.disableElements(this.acronym.acronym + " has been deleted", "input-box-status-good");
   }
 
 
