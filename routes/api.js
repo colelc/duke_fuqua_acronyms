@@ -39,15 +39,21 @@ try {
         const id = request.params.id;
         logger.logIt(__filename, `GET /acronym/${id}`);
 
-        const queryConfig = {
-            text: "SELECT * FROM fuqua_acronyms WHERE id = $1 AND active IS TRUE ",
-            values: [id]
-        };
+        const valid = validate(request);
+        if (!valid) {
+            logger.logIt(__filename, `GET /acronym/${id} 401 Cannot identify user`, "error");
+            response.status(401).json({errorMsg: " Cannot identify user"});
+        } else {
+            const queryConfig = {
+                text: "SELECT * FROM fuqua_acronyms WHERE id = $1 AND active IS TRUE ",
+                values: [id]
+            };
 
-        const pgClient = await db.pool.connect();
-        const result = await pgClient.query(queryConfig);
-        pgClient.release();
-        response.status(200).json(result.rows);
+            const pgClient = await db.pool.connect();
+            const result = await pgClient.query(queryConfig);
+            pgClient.release();
+            response.status(200).json(result.rows);
+        }
     });   
 } catch(err) {
     logger.logIt(__filename, `GET /acronym/${id} 500 ${err} `, "error");
@@ -58,15 +64,21 @@ try {
 try {
     router.get("/acronyms", async (request, response, next) => {
         logger.logIt(__filename, `GET /acronyms  `);
-        try {
-            const pgClient = await db.pool.connect();
+        const valid = validate(request);
+        if (!valid) {
+            logger.logIt(__filename, "Get /acronyms 401 Cannot identify user", "error");
+            response.status(401).json({errorMsg: " Cannot identify user"});
+        } else {
+            try {
+                const pgClient = await db.pool.connect();
 
-            const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
-            pgClient.release();
-            response.status(200).json(result.rows);
-       } catch(_err) {
-            logger.logIt(__filename, `GET /acronyms 500 ${_err} `, "error");
-            response.status(500).json({err: _err, errorMsg: "Internal database error on the nodejs side"});      
+                const result = await pgClient.query("SELECT * FROM fuqua_acronyms WHERE active is TRUE ORDER BY acronym");
+                pgClient.release();
+                response.status(200).json(result.rows);
+            } catch(_err) {
+                logger.logIt(__filename, `GET /acronyms 500 ${_err} `, "error");
+                response.status(500).json({err: _err, errorMsg: "Internal database error on the nodejs side"});      
+            }
         }
     });
 } catch(err) {
@@ -77,10 +89,10 @@ try {
 // POST NEW ACRONYM
 try {
     router.post("/new_acronym", async (request, response) => {
-
-        if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
-            logger.logIt(__filename, `POST /new_acronym  No identity in request object - returning 401`, "error");
-            response.status(401).json({error: "No identity for this person"});           
+        const valid = validate(request);
+        if (!valid) {
+            logger.logIt(__filename, "POST /new_acronym 401 Cannot identify user", "error");
+            response.status(401).json({errorMsg: " Cannot identify user"});
         } else {
             logger.logIt(__filename, `POST /new_acronym  dukeid=${request.identity.dukeid}`)
             const data = request.body;
@@ -135,9 +147,10 @@ try {
 // DELETE ACRONYM
 try {
     router.delete("/delete_acronym/:id", async (request, response) => {
-        if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
-            logger.logIt(__filename, `DELETE /acronym  No identity object in request body - returning 401`, "error");
-            response.status(401).json({error: "No identity for this person"});           
+        const valid = validate(request);
+        if (!valid) {
+            logger.logIt(__filename, "DELETE /delete_acronym 401 Cannot identify user", "error");
+            response.status(401).json({errorMsg: " Cannot identify user"});
         } else {
             const id = request.params.id;
 
@@ -180,6 +193,15 @@ getUserQueryConfig = (id) => {
     };
    // console.log(`SELECT * FROM fuqua_acronym_permissions WHERE duke_id = ${id} AND active IS TRUE`);
     return queryConfig;
+}
+
+validate = (request) => {
+    if (request.identity === undefined  ||  request.identity.dukeid === undefined) {
+        //logger.logIt(__filename, `GET /user  No identity object in request body - returning 401`, "error");
+        return false;
+       // response.status(401).json({error: "No identity for this person"});           
+    } 
+    return true;
 }
 
 module.exports = router;

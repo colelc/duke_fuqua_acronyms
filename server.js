@@ -10,8 +10,13 @@ const app = express();
 
 // middleware to intercept request
 app.use((request, response, next) => {
-    fwAuth.getIdentity(request); // put the identity object into the request object
-    next();
+   fwAuth.getIdentity(request)
+        .then(data => {
+        request.identity = data;
+        next();
+     }).catch(err => {
+         next();
+     });
 });
 
 // middleware to protect POST and DELETE endpoints
