@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AcronymsAdminViewComponent } from './acronyms-admin-view/acronyms-admin-view.component';
-import { AcronymsFooterComponent } from './acronyms-footer/acronyms-footer.component';
 import { AcronymsUserViewComponent } from './acronyms-user-view/acronyms-user-view.component';
 import { AcronymsService } from './service/acronyms.service';
 import { ConfigService } from './service/config.service';
@@ -16,7 +15,6 @@ import { environment } from '../environments/environment';
   selector: 'app-home',
   standalone: true,
   imports: [ 
-    AcronymsFooterComponent, 
     AcronymsAdminViewComponent, AcronymsUserViewComponent
     , FormsModule
     ,RouterOutlet
