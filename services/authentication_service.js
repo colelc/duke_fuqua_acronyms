@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db/postgres");
-const { getAuthedClaims, getUnauthedClaims } = require("simple-jwt-auth");
+const { getAuthedClaims } = require("simple-jwt-auth");
 const { getTokenFromHeaders } = require("simple-jwt-auth");
 const logger = require("../logging/logger");
 
@@ -20,6 +20,15 @@ const getIdentity = ((request) => {
 const extractJWT = ((rawHeaders) => {
    // logger.logIt(__filename, "extractJWT", rawHeaders);
 
+   // try getting JWT from Authorization header first
+   const token = getTokenFromHeaders({  headers: "Authorization" });
+   logger.logIt(__filename, `getTokenFromHeaders returns ${token}`)
+
+   if (token !== null) {
+    return token;
+   }
+
+    // try getting JWT from _FSB_G
     const extracted = rawHeaders.filter((token) => {  return token.includes("_FSB_G");  });
     if (extracted.length !== 1) {
         logger.logIt(__filename, "Uh oh, We do not have the FSB anywhere in the raw headers", "error");
