@@ -11,7 +11,7 @@ const app = express();
 
 // middleware to intercept request - not sure if this is the best way to do it, but it works for now
 app.use((request, response, next) => {
-   fwAuth.getIdentity(request, config.data.issuer)
+   fwAuth.getIdentity(request)
     .then(data => {
         request.identity = data;
         next();

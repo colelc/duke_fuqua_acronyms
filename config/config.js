@@ -18,6 +18,8 @@ const data = {
 
     issuer: ENV === "d" ? process.env.D_ISSUER : process.env.P_ISSUER,
 
+    cookieName: ENV === "d" ? process.env.D_COOKIE : process.env.P_COOKIE,
+
     postgres: {
         host: ENV === "d" ? process.env.D_POSTGRES_HOST : process.env.P_POSTGRES_HOST,
         database: ENV === "d" ? process.env.D_POSTGRES_DATABASE : process.env.P_POSTGRES_DATABASE,

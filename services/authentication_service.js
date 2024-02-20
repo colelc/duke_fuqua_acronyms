@@ -1,15 +1,16 @@
+const config = require("../config/config");
 const { getAuthedClaims } = require("simple-jwt-auth");
 const { getTokenFromHeaders } = require("simple-jwt-auth");
 const logger = require("../logging/logger");
 
-const getIdentity = ((request, issuer) => {
+const getIdentity = ((request) => {
 
     logger.logIt(__filename, `getIdentity middleware authentication: ${request.method} ${request.url}`);
 
     return getAuthedClaims({
         token: extractJWT(request.rawHeaders),
         //issuer: "https://go.fuqua.duke.edu/auth",
-        issuer: issuer,
+        issuer: config.data.issuer,
         audience: "FuquaWorld"
     });
 });
@@ -25,25 +26,25 @@ const extractJWT = ((rawHeaders) => {
     return token;
    }
 
-    // try getting JWT from _FSB_G
-    const extracted = rawHeaders.filter((token) => {  return token.includes("_FSB_G");  });
+    // try getting JWT from cookie
+    const extracted = rawHeaders.filter((token) => {  return token.includes(config.data.cookieName);  });
     if (extracted.length !== 1) {
         logger.logIt(__filename, "Uh oh, We do not have the FSB anywhere in the raw headers", "error");
         return null;
     } 
 
-    const fsbArray = (extracted[0].split(";")).filter((str) => {
-        return str.includes("_FSB_G");
+    const cookieArray = (extracted[0].split(";")).filter((str) => {
+        return str.includes(config.data.cookieName);
     });
 
-    if (fsbArray.length !== 1) {
-        logger.logIt(__filename, "Uh oh, no FSB string can be parsed", "error");
+    if (cookieArray.length !== 1) {
+        logger.logIt(__filename, `Uh oh, no ${config.data.cookieName} string can be parsed`, "error");
         return null;
     }
     
-    const fsb = fsbArray[0].trim().replace("_FSB_G=", "");
-    logger.logIt(__filename, `_FSB_G acquired`);
-    return fsb;
+    const cookie = cookieArray[0].trim().replace(config.data.cookieName+"=", "");
+    logger.logIt(__filename, `${config.data.cookieName} acquired`);
+    return cookie;
 });
 
 module.exports = { getIdentity }
