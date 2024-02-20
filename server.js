@@ -10,7 +10,7 @@ const app = express();
 
 // middleware to intercept request
 app.use((request, response, next) => {
-   fwAuth.getIdentity(request)
+   fwAuth.getIdentity(request, config.data.issuer)
         .then(data => {
         request.identity = data;
         next();
@@ -18,11 +18,6 @@ app.use((request, response, next) => {
          next();
      });
 });
-
-// middleware to protect POST and DELETE endpoints
-// app.post("*", (request, response, next) => {
-//     console.log("POST MIDDLEWARE");
-// } );
 
 // handle CORS
 const allowedOrigin = config.data.httpsBaseUrl + ":" + config.data.originPort;

@@ -1,18 +1,19 @@
 
-const express = require("express");
-const router = express.Router();
-const db = require("../db/postgres");
+//const express = require("express");
+// const router = express.Router();
+// const db = require("../db/postgres");
 const { getAuthedClaims } = require("simple-jwt-auth");
 const { getTokenFromHeaders } = require("simple-jwt-auth");
 const logger = require("../logging/logger");
 
-const getIdentity = ((request) => {
+const getIdentity = ((request, issuer) => {
 
     logger.logIt(__filename, `getIdentity middleware doAuthentication: ${request.method} ${request.url}`);
 
     return getAuthedClaims({
         token: extractJWT(request.rawHeaders),
-        issuer: "https://go.fuqua.duke.edu/auth",
+        //issuer: "https://go.fuqua.duke.edu/auth",
+        issuer: issuer,
         audience: "FuquaWorld"
     });
 });
@@ -22,7 +23,7 @@ const extractJWT = ((rawHeaders) => {
 
    // try getting JWT from Authorization header first
    const token = getTokenFromHeaders({  headers: "Authorization" });
-   logger.logIt(__filename, `getTokenFromHeaders returns ${token}`)
+   logger.logIt(__filename, `getTokenFromHeaders returns ${token}, next looking for the FSB_G `)
 
    if (token !== null) {
     return token;
@@ -45,7 +46,7 @@ const extractJWT = ((rawHeaders) => {
     }
     
     const fsb = fsbArray[0].trim().replace("_FSB_G=", "");
-   // logger.logIt(__filename, "fsb", fsb);
+    logger.logIt(__filename, `_FSB_G acquired`);
     return fsb;
 });
 

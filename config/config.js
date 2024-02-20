@@ -16,6 +16,8 @@ const data = {
 
     originPort: ENV === "d" ? process.env.D_ORIGIN_PORT : process.env.P_ORIGIN_PORT,
 
+    issuer: ENV === "d" ? process.env.D_ISSUER : process.env.P_ISSUER,
+
     postgres: {
         host: ENV === "d" ? process.env.D_POSTGRES_HOST : process.env.P_POSTGRES_HOST,
         database: ENV === "d" ? process.env.D_POSTGRES_DATABASE : process.env.P_POSTGRES_DATABASE,
