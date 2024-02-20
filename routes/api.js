@@ -64,11 +64,11 @@ try {
 try {
     router.get("/acronyms", async (request, response, next) => {
         logger.logIt(__filename, `GET /acronyms  `);
-        const valid = validate(request);
-        if (!valid) {
-            logger.logIt(__filename, "Get /acronyms 401 Cannot identify user", "error");
-            response.status(401).json({errorMsg: " Cannot identify user"});
-        } else {
+       // const valid = validate(request);
+       // if (!valid) {
+       //     logger.logIt(__filename, "Get /acronyms 401 Cannot identify user", "error");
+       //     response.status(401).json({errorMsg: " Cannot identify user"});
+       // } else {
             try {
                 const pgClient = await db.pool.connect();
 
@@ -79,7 +79,7 @@ try {
                 logger.logIt(__filename, `GET /acronyms 500 ${_err} `, "error");
                 response.status(500).json({err: _err, errorMsg: "Internal database error on the nodejs side"});      
             }
-        }
+       // }
     });
 } catch(err) {
     logger.logIt(__filename, `GET /acronyms 500 ${err} `, "error");

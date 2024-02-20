@@ -1,14 +1,10 @@
-
-//const express = require("express");
-// const router = express.Router();
-// const db = require("../db/postgres");
 const { getAuthedClaims } = require("simple-jwt-auth");
 const { getTokenFromHeaders } = require("simple-jwt-auth");
 const logger = require("../logging/logger");
 
 const getIdentity = ((request, issuer) => {
 
-    logger.logIt(__filename, `getIdentity middleware doAuthentication: ${request.method} ${request.url}`);
+    logger.logIt(__filename, `getIdentity middleware authentication: ${request.method} ${request.url}`);
 
     return getAuthedClaims({
         token: extractJWT(request.rawHeaders),
@@ -23,7 +19,7 @@ const extractJWT = ((rawHeaders) => {
 
    // try getting JWT from Authorization header first
    const token = getTokenFromHeaders({  headers: "Authorization" });
-   logger.logIt(__filename, `getTokenFromHeaders returns ${token}, next looking for the FSB_G `)
+   logger.logIt(__filename, `getTokenFromHeaders returns ${token}`)
 
    if (token !== null) {
     return token;
@@ -49,22 +45,5 @@ const extractJWT = ((rawHeaders) => {
     logger.logIt(__filename, `_FSB_G acquired`);
     return fsb;
 });
-
-// const getClaims = ((jwt) => {
-//     try {
-//         const pieces = jwt.split("\.");
-
-//         if (pieces.length !== 3) {
-//             throw new Error("Uh oh, not the right number of pieces in the JWT - there should be 3 (header, data, signature)");
-//         }
-
-//         const claimsString = (Buffer.from(pieces[1], "base64")).toString("utf8");
-//         return JSON.parse(claimsString);
-//     } catch(err) {
-//         logger.logIt(__filename, "Something has gone wrong on the nodejs back end. Cannot authenticate user.", "error");
-//         logger.logIt(__filename, err, "error");
-//         return null;
-//     }
-// });
 
 module.exports = { getIdentity }

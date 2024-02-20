@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
   home() {
     try {
       this.userService.getUser().subscribe(data => {
-        if (data === null) {
+        if (data === null  ||  (data  && data.error)) {
           console.log("Cannot identify user - we will default to non-admin status");
           this.view(data);
         } else {
