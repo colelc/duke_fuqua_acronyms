@@ -12,7 +12,8 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
 
 @Component({
-  selector: 'app-home',
+  //selector: 'app-home',
+  selector: 'fuqua-acronyms',
   standalone: true,
   imports: [ 
     AcronymsAdminViewComponent, AcronymsUserViewComponent

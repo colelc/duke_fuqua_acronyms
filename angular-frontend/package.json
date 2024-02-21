@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve  --ssl  --port=8443",
-    "build": "ng build  --ssl",
+    "build": "ng build --ssl  --output-hashing=none --configuration production",
+    "package": "cat dist/angular/{runtime,polyfills,main}.js > dist/angular/component-lib.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -14,6 +15,7 @@
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",
+    "@angular/elements": "^17.1.1",
     "@angular/forms": "^17.0.0",
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
