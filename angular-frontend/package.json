@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve  --ssl  --port=8443",
-    "build": "ng build --ssl  --output-hashing=none --configuration production",
+    "build": "ng build --ssl  --output-hashing none --configuration production",
     "package": "cat dist/angular/{runtime,polyfills,main}.js > dist/angular/component-lib.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
