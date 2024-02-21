@@ -20,5 +20,5 @@ import { appConfig } from "./app/app.config";
     injector: app.injector
   });
 
-  customElements.define("fuqua-acronyms", appElement);
+  customElements.define("fw-acronyms", appElement);
 })();

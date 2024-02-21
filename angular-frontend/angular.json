@@ -27,7 +27,13 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              {
+                "input": "./scripts/postbuild-bundler.js",
+                "bundleName": "bundle",
+                "inject": false
+              }
+            ]
           },
           "configurations": {
             "production": {

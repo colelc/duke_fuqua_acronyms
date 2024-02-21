@@ -13,7 +13,7 @@ import { environment } from '../environments/environment';
 
 @Component({
   //selector: 'app-home',
-  selector: 'fuqua-acronyms',
+  selector: 'fw-acronyms',
   standalone: true,
   imports: [ 
     AcronymsAdminViewComponent, AcronymsUserViewComponent
