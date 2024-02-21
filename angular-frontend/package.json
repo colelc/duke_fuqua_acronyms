@@ -1,6 +1,7 @@
 {
-  "name": "acronyms",
-  "version": "1.0.0",
+  "name": "@fsb/fw-acronyms",
+  "version": "0.0.1",
+  "description": "Fuqua School of Business Acronyms Module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve  --ssl  --port=8443",
@@ -8,7 +9,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.0",
     "@angular/common": "^17.0.0",
@@ -20,8 +20,6 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@fsb/fw-auth": "^0.0.25",
-    "primeicons": "^6.0.1",
-    "primeng": "^17.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

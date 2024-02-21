@@ -25,7 +25,7 @@ import { environment } from '../environments/environment';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  schemas: [/*CUSTOM_ELEMENTS_SCHEMA*/] // would need this for PrimeNg to work
+  schemas: [] 
 })
 
 export class AppComponent implements OnInit {
