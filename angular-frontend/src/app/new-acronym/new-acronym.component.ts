@@ -43,8 +43,13 @@ export class NewAcronymComponent implements OnInit {
   }
 
   onKeyUp = () => {
+    let goodName = true;
     if (this.acronym.acronym.length > 0) {
-      this.acronym.acronym = this.acronym.acronym.toUpperCase();
+      this.acronym.acronym = this.acronym.acronym.toUpperCase().trim();
+
+      if (this.acronymsService.duplicate(this.acronym.acronym)) {
+        goodName = false;
+      }
     }
 
     const tagsOKStatus = this.tagSupport();
@@ -53,7 +58,8 @@ export class NewAcronymComponent implements OnInit {
       && this.acronym.definition.length > 0
       && this.acronym.areaKey.length > 0
       && this.acronym.refersTo.length > 0
-      && tagsOKStatus.length === 0) {
+      && tagsOKStatus.length === 0
+      && goodName) {
         this.enableElements();
       } else {
         this.disableElements(tagsOKStatus, tagsOKStatus === "" ? "input-box-status-good" : "input-box-status-bad");

@@ -28,6 +28,15 @@ export class AcronymsService {
       return null;
   }
 
+  duplicate = (acr:string):boolean => {
+    const names=this.getAcronyms().map(name => name.acronym);
+    const filtered = names.filter(f => {return f.toUpperCase().trim() === acr.toUpperCase().trim();});
+    if (filtered.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
   initAcronym = () => {
     return {
       id: null, 

@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve  --ssl  --port=8443",
-    "build": "ng build --ssl  --output-hashing=none --configuration production",
+    "build": "ng build  --output-hashing=none --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
