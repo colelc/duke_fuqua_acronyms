@@ -10,6 +10,7 @@ const logger = require("./logging/logger");
 
 const app = express();
 
+// middleware to serve static content
 app.use(express.static("static"));
 
 // middleware to intercept request - not sure if this is the best way to do it, but it works for now
