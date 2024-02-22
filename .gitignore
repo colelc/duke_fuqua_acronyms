@@ -4,6 +4,7 @@ angular-frontend/.angular/*
 angular-frontend/dist/*
 angular-frontend/certs
 ACRONYMS.log
+static/
 
 
 

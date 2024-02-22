@@ -2,6 +2,7 @@
   "name": "@fsb/fw-acronyms",
   "version": "0.0.1",
   "description": "Fuqua School of Business Acronyms Module",
+  "main": "bundle.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve  --ssl  --port=8443",

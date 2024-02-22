@@ -5,9 +5,12 @@ const https = require("node:https");
 const fs = require("fs");
 const fwAuth = require("./services/authentication_service")
 const apiRoutes = require("./routes/api");
+const path = require("path");
 const logger = require("./logging/logger");
 
 const app = express();
+
+app.use(express.static("static/browser"));
 
 // middleware to intercept request - not sure if this is the best way to do it, but it works for now
 app.use((request, response, next) => {
@@ -37,10 +40,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use("/api", apiRoutes);
 
-// app.get("/", (request, response) => {
-//     logger.logIt(__filename, `${request.method} ${request.url}`);
-//     response.send("<h4>Acronyms Node.js backend HTTPS</h4>");
-// });
+app.get("/acronyms", (request, response) => {
+    logger.logIt(__filename, `${request.method} ${request.url}`);
+    response.sendFile(path.join(__dirname, "static/browser/index.html"));
+    //response.send("<h4>Acronyms Node.js backend HTTPS</h4>");
+});
 
 const options = {
     pfx: fs.readFileSync(config.data.certFile),
