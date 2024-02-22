@@ -10,7 +10,7 @@ const logger = require("./logging/logger");
 
 const app = express();
 
-app.use(express.static("static/browser"));
+app.use(express.static("static"));
 
 // middleware to intercept request - not sure if this is the best way to do it, but it works for now
 app.use((request, response, next) => {
@@ -42,7 +42,7 @@ app.use("/api", apiRoutes);
 
 app.get("/acronyms", (request, response) => {
     logger.logIt(__filename, `${request.method} ${request.url}`);
-    response.sendFile(path.join(__dirname, "static/browser/index.html"));
+    response.sendFile(path.join(__dirname, "static/index.html"));
     //response.send("<h4>Acronyms Node.js backend HTTPS</h4>");
 });
 
